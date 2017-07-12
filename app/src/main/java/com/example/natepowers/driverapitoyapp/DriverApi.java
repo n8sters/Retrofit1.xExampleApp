@@ -1,6 +1,10 @@
 package com.example.natepowers.driverapitoyapp;
 
+import java.util.List;
+
 import retrofit.Callback;
+import retrofit.http.GET;
+import retrofit.http.Headers;
 import retrofit.http.POST;
 import retrofit.http.Query;
 
@@ -16,8 +20,9 @@ import retrofit.http.Query;
 
 public interface DriverApi {
 
+
     @POST("/sessions/authenticate/request")
-    void getAuthRequestFromApi (
+    void getAuthRequestFromApi(
             @Query("phone") String phone,
             Callback<DriverData> callback);
 
@@ -25,4 +30,19 @@ public interface DriverApi {
     void logDriverIn(
             @Query("phone") String phone,
             Callback<DriverData> callback);
+
+
+    // is this right?
+    interface getDriverInfo {
+        @Headers("Username:UUID")
+        @GET("/driver")
+        List<DriverData> getTasks();
+    }
+
+    /*   Example auth request from SO
+
+    @GET("/secret_things")
+    SecretThing.List getSecretThings(@Header("Authorization") String token)
+    */
+
 }

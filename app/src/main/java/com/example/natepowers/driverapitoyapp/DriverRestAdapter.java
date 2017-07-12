@@ -18,11 +18,16 @@ import retrofit.RestAdapter;
 
 public class DriverRestAdapter {
 
+    // Username is UUID and password is token,
+
     protected final String TAG = getClass().getSimpleName();
     protected RestAdapter mRestAdapter;
     protected DriverApi mApi;
     static final String DRIVER_DATABASE_URL = "https://driver-gateway.gocopia.com";
     static final String UUID = "557264d2-ee65-41a9-b3b5-83d205562431";
+    static final String currentToken = "eyJhbGciOiJIUzI1NiJ9.eyJVU0lEIjoiYzllNjdiMDYyOTlmYWM5MzIxO" +
+            "DFlNzkyYmNjMWIzZTIxNjRkZDJmZSIsInRzIjoxNDk5ODg5OTk0fQ.OifyfFYdOxdVMSaljmvbPwR1JrhHe9" +
+            "aMqA3HZRCSXyk";
 
     public DriverRestAdapter() {
         mRestAdapter = new RestAdapter.Builder()

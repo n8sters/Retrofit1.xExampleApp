@@ -30,12 +30,6 @@ public class MainActivity extends AppCompatActivity {
     private ProgressBar mProgressBar;
     private EditText    mInputCityName;
     private TextView    mCityNameTextView;
-    private TextView    mCountryNameTextView;
-    private TextView    mCodTextView;
-    private TextView    mCoordsTextView;
-    private TextView    mTempTextView;
-    private TextView    mSunriseTextView;
-    private TextView    mSunsetTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -137,13 +131,6 @@ public class MainActivity extends AppCompatActivity {
                 mProgressBar = (ProgressBar) findViewById(R.id.progress_bar_id);
                 mInputCityName = (EditText) findViewById(R.id.input_city_id);
                 mCityNameTextView = (TextView) findViewById(R.id.city_name_id);
-                mCountryNameTextView = (TextView) findViewById(R.id.country_name_id);
-                mCodTextView = (TextView) findViewById(R.id.cod_id);
-                mCoordsTextView = (TextView) findViewById(R.id.coords_id);
-                mTempTextView = (TextView) findViewById(R.id.temp_id);
-                mSunriseTextView = (TextView) findViewById(R.id.sunrise_id);
-                mSunsetTextView = (TextView) findViewById(R.id.sunset_id);
-
                 // Refresh UX data
                 if (mRetainedAppData.isFetchInProgress()) {
                     mProgressBar.setVisibility(View.VISIBLE);
