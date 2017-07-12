@@ -10,3 +10,17 @@ package com.example.natepowers.driverapitoyapp;
  * ~~~~~~~~~~~~~~~~~~~  at Copia PBC   ~~~~~~~~~~~~~~~~~~~~~~
  */
 
+public class User {
+
+    boolean success;
+    private String phone;
+
+    public User(String phone) {
+        this.phone = phone;
+    }
+
+    public Boolean wasSuccess() {
+        return success;
+    }
+
+}

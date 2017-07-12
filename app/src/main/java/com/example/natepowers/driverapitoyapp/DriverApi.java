@@ -2,11 +2,14 @@ package com.example.natepowers.driverapitoyapp;
 
 import java.util.List;
 
-import retrofit.Callback;
-import retrofit.http.GET;
-import retrofit.http.Headers;
-import retrofit.http.POST;
-import retrofit.http.Query;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.http.Body;
+import retrofit2.http.GET;
+import retrofit2.http.Headers;
+import retrofit2.http.POST;
+import retrofit2.http.Query;
+
 
 /**
  * Created by:
@@ -22,8 +25,10 @@ public interface DriverApi {
 
 
     @POST("/sessions/authenticate/request")
+    Call<User> createAccount(@Body User user);
+
+    @POST("/sessions/authenticate/request")
     void getAuthRequestFromApi(
-            @Query("phone") String phone,
             Callback<DriverData> callback);
 
     @POST("/sessions/authenticate")
