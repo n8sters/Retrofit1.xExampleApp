@@ -1,5 +1,6 @@
 package com.example.natepowers.driverapitoyapp;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -29,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
     String accessToken = "eyJhbGciOiJIUzI1NiJ9.eyJVU0lEIjoiM2EyY2UyMjY0ZjE0ZTM1ZjgxNGZjZDA4NGMxZTFmZDlkNmNmYWI3OCIsInRzIjoxNDk5OTkwOTc1fQ.OKJlQxNgYOkaaO9TwjxZg4z1GBBlxl38qB-f1EbjKWw";
     String token;
     String base = UUID + ":" + accessToken;
-    String authHeader = "Basic " + Base64.encodeToString(base.getBytes(), Base64.NO_WRAP);
+    String authHeader = "Basic " + Base64.encodeToString(base.getBytes(), Base64.NO_WRAP); // encode login
     String type;
 
 
@@ -49,7 +50,8 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 User user = new User();
                 getDriverData(user);
-                //User user = new User(phone);
+                User user1 = new User(UUID, phone, access );
+                logUserIn(user1);
                 //sendNetworkRequest(user);
             }
         });
@@ -77,6 +79,8 @@ public class MainActivity extends AppCompatActivity {
             public void onResponse(Call<User> call, Response<User> response) {
                 //Toast.makeText(MainActivity.this, "It worked! Token: " + Boolean.toString(response.body().wasSuccess()), Toast.LENGTH_SHORT).show();
                 //Log.e(TAG, "onResponse: " +  response.toString());
+                Intent intent = new Intent( MainActivity.this, MainActivity.class);
+                startActivity(intent);
             }
 
             @Override
@@ -123,7 +127,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void getDriverData( User user ) {
+    private void getDriverData(final User user ) {
 
         OkHttpClient.Builder okBuilder = new OkHttpClient.Builder();
 
@@ -145,9 +149,24 @@ public class MainActivity extends AppCompatActivity {
         call.enqueue(new Callback<User>() {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
-                Toast.makeText(MainActivity.this, "Yay!", Toast.LENGTH_SHORT).show();
-                type = response.body().getType();
-                Toast.makeText(MainActivity.this, "Type: " + type, Toast.LENGTH_LONG).show();
+                if (response.code() == 200) {
+                    // Do awesome stuff
+                    type = response.body().getType();
+                    Toast.makeText(getApplicationContext(), "Type: " + type, Toast.LENGTH_LONG).show();
+                    Double typeInt = Double.parseDouble(type);
+                    int i = typeInt.intValue();
+                    Log.e(TAG, "onResponse: Type: " + i );
+                    switch (i) {
+                        case 1:
+                            Intent intent = new Intent(MainActivity.this, DetailActivity.class);
+                            startActivity(intent);
+                            Log.e(TAG, "onResponse: Type switch statement called" );
+                            break;
+                    }
+                } else {
+                    // Handle other response codes
+                    Toast.makeText(getApplicationContext(), "Something went wrong here.", Toast.LENGTH_SHORT).show();
+                }
             }
 
             @Override
