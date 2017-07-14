@@ -26,7 +26,6 @@ public class MainActivity extends AppCompatActivity {
 
     String UUID = "557264d2-ee65-41a9-b3b5-83d205562431";
     String phone = "(650)223-4780";
-    String access = "855668";
     String accessToken = "eyJhbGciOiJIUzI1NiJ9.eyJVU0lEIjoiM2EyY2UyMjY0ZjE0ZTM1ZjgxNGZjZDA4NGMxZTFmZDlkNmNmYWI3OCIsInRzIjoxNDk5OTkwOTc1fQ.OKJlQxNgYOkaaO9TwjxZg4z1GBBlxl38qB-f1EbjKWw";
     String token;
     String base = UUID + ":" + accessToken;
@@ -43,16 +42,36 @@ public class MainActivity extends AppCompatActivity {
         final EditText phoneEditText = (EditText) findViewById(R.id.editText);
 
 
+        Button getAccess = (Button) findViewById(R.id.request_access_button);
 
-        Button makeRequest = (Button) findViewById(R.id.button);
-        makeRequest.setOnClickListener(new View.OnClickListener() {
+        Button getToken = (Button) findViewById(R.id.get_token_button);
+
+        Button getType = (Button) findViewById(R.id.get_type_button);
+
+        getAccess.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                User user = new User(phone);
+                sendNetworkRequest(user);
+            }
+        });
+
+        getToken.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //User user = new User();
+                //getDriverData(user);
+                User user1 = new User(UUID, phoneEditText.getText().toString(), phone);
+                logUserIn(user1);
+                //sendNetworkRequest(user);
+            }
+        });
+
+        getType.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 User user = new User();
                 getDriverData(user);
-                User user1 = new User(UUID, phone, access );
-                logUserIn(user1);
-                //sendNetworkRequest(user);
             }
         });
     }
@@ -77,10 +96,6 @@ public class MainActivity extends AppCompatActivity {
         call.enqueue(new Callback<User>() {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
-                //Toast.makeText(MainActivity.this, "It worked! Token: " + Boolean.toString(response.body().wasSuccess()), Toast.LENGTH_SHORT).show();
-                //Log.e(TAG, "onResponse: " +  response.toString());
-                Intent intent = new Intent( MainActivity.this, MainActivity.class);
-                startActivity(intent);
             }
 
             @Override
@@ -113,9 +128,11 @@ public class MainActivity extends AppCompatActivity {
         call.enqueue(new Callback<User>() {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
-                // TODO disable fab until a token is returned
-                token = response.body().getToken();
-                Log.e(TAG, "onResponse: Token: " + token );
+                if (response.code() == 200) {
+                    // Do awesome stuff
+                    setAccess(response.body().getToken());
+                    Log.e(TAG, "onResponse: Token: " + token);
+                }
 
             }
 
@@ -160,8 +177,6 @@ public class MainActivity extends AppCompatActivity {
                         case 1:
                             Intent intent = new Intent(MainActivity.this, DetailActivity.class);
                             startActivity(intent);
-                            Log.e(TAG, "onResponse: Type switch statement called" );
-                            break;
                     }
                 } else {
                     // Handle other response codes
@@ -174,5 +189,9 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(MainActivity.this, "Something went wrong...", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    void setAccess(String s ) {
+        token = s;
     }
 }

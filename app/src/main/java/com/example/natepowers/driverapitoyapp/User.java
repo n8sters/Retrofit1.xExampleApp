@@ -27,8 +27,8 @@ public class User {
         return success;
     }
 
-    public void setToken(String token) {
-        this.token = token;
+    public void setToken(String token1) {
+        token = token1;
     }
 
     private String token;
