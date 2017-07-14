@@ -23,13 +23,9 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class MainActivity extends AppCompatActivity {
 
     String TAG = MainActivity.class.getSimpleName();
-
     String UUID = "557264d2-ee65-41a9-b3b5-83d205562431";
     String phone = "(650)223-4780";
-    String accessToken = "eyJhbGciOiJIUzI1NiJ9.eyJVU0lEIjoiM2EyY2UyMjY0ZjE0ZTM1ZjgxNGZjZDA4NGMxZTFmZDlkNmNmYWI3OCIsInRzIjoxNDk5OTkwOTc1fQ.OKJlQxNgYOkaaO9TwjxZg4z1GBBlxl38qB-f1EbjKWw";
     String token;
-    String base = UUID + ":" + accessToken;
-    String authHeader = "Basic " + Base64.encodeToString(base.getBytes(), Base64.NO_WRAP); // encode login
     String type;
 
 
@@ -132,6 +128,8 @@ public class MainActivity extends AppCompatActivity {
                     // Do awesome stuff
                     setAccess(response.body().getToken());
                     Log.e(TAG, "onResponse: Token: " + token);
+                    //User user = new User();
+                    //getDriverData(user);
                 }
 
             }
@@ -145,6 +143,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void getDriverData(final User user ) {
+
+        String base = UUID + ":" + token;
+        String authHeader = "Basic " + Base64.encodeToString(base.getBytes(), Base64.NO_WRAP); // encode login
+
+        Log.e(TAG, "getDriverData: token at start of getDriverData " + token );
 
         OkHttpClient.Builder okBuilder = new OkHttpClient.Builder();
 
@@ -169,10 +172,7 @@ public class MainActivity extends AppCompatActivity {
                 if (response.code() == 200) {
                     // Do awesome stuff
                     type = response.body().getType();
-                    Toast.makeText(getApplicationContext(), "Type: " + type, Toast.LENGTH_LONG).show();
-                    Double typeInt = Double.parseDouble(type);
-                    int i = typeInt.intValue();
-                    Log.e(TAG, "onResponse: Type: " + i );
+                    int i = Integer.parseInt(type);
                     switch (i) {
                         case 1:
                             Intent intent = new Intent(MainActivity.this, DetailActivity.class);
