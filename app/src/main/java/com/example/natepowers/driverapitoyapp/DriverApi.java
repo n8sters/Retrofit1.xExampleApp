@@ -2,6 +2,8 @@ package com.example.natepowers.driverapitoyapp;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.GET;
+import retrofit2.http.Header;
 import retrofit2.http.POST;
 
 
@@ -18,8 +20,19 @@ import retrofit2.http.POST;
 public interface DriverApi {
 
 
+    // requests an access code, which expires in 5-10 min
     @POST("/sessions/authenticate/request")
-    Call<User> createAccount(@Body User user);
+    Call<User> requestAccessCode(@Body User user);
+
+    // request access token to log in
+    @POST("/sessions/authenticate")
+    Call<User> requestToken(@Body User user);
+
+
+    // get the drivers info  ( AUTH REQUIRED )
+    @GET("/driver")
+    Call<User> getDriverInfo(@Header("Authorization") String authToken);
+
 
 
 
