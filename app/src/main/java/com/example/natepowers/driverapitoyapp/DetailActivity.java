@@ -1,8 +1,11 @@
 package com.example.natepowers.driverapitoyapp;
 
 import android.content.SharedPreferences;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Base64;
 import android.util.Log;
@@ -11,7 +14,12 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.File;
+
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
+import okhttp3.RequestBody;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -96,4 +104,70 @@ public class DetailActivity extends AppCompatActivity {
             }
         });
     }
+
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    private void uploadPicture(Uri fileUri, User user) {
+
+        SharedPreferences sharedPref =
+                PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+
+        String token = sharedPref.getString("token", null);
+
+        Log.e(TAG, "getAvailableTasks: Token at getAvailableTasks " + token );
+
+
+        String base = UUID + ":" + token;
+        String authHeader = "Basic " + Base64.encodeToString(base.getBytes(), Base64.NO_WRAP); // encode login
+
+        Log.e(TAG, "getDriverData: token at start of getDriverData " + token );
+
+        Object filePath;
+
+        File file = new File(fileUri.toString());
+        RequestBody reqFile = RequestBody.create(MediaType.parse("image/*"), file);
+        MultipartBody.Part body = MultipartBody.Part.createFormData("upload", file.getName(), reqFile);
+        RequestBody name = RequestBody.create(MediaType.parse("text/plain"), "upload_test");
+        RequestBody picture = RequestBody.create(
+                MediaType.parse(getContentResolver().getType(fileUri)),
+                file);
+
+        MultipartBody.Part part = MultipartBody.Part.createFormData("photo", file.getName(), picture );
+
+
+        OkHttpClient.Builder okBuilder = new OkHttpClient.Builder();
+
+        HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
+        okBuilder.addInterceptor(logging);
+        logging.setLevel(HttpLoggingInterceptor.Level.BODY); // request everything
+
+        Retrofit.Builder builder = new Retrofit.Builder()
+                .baseUrl("https://driver-gateway.gocopia.com")
+                .addConverterFactory(GsonConverterFactory.create())
+                .client(okBuilder.build());
+
+        Retrofit retrofit = builder.build();
+
+        DriverApi client = retrofit.create(DriverApi.class);
+
+        Call<User> call = client.uploadDriverPicture(authHeader, part); // get driver data
+
+        call.enqueue(new Callback<User>() {
+            @Override
+            public void onResponse(Call<User> call, Response<User> response) {
+                if (response.code() == 200) {
+                    // Do awesome stuff
+                    Toast.makeText(DetailActivity.this, "It worked!", Toast.LENGTH_SHORT).show();
+                } else {
+                    // Handle other response codes
+                    Toast.makeText(getApplicationContext(), "Something went wrong here.", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<User> call, Throwable t) {
+                Toast.makeText(DetailActivity.this, "Something went wrong...", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
 }

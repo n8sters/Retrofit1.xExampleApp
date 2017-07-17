@@ -1,10 +1,13 @@
 package com.example.natepowers.driverapitoyapp;
 
+import okhttp3.MultipartBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.Part;
 
 
 /**
@@ -39,6 +42,12 @@ public interface DriverApi {
     @POST("/sessions/deauthenticate")
     Call<User> logUserOut(@Header("Authorization") String authHeader); // correct?
 
+    // upload picture of the drivers' license, registration etc...
+    @Multipart
+    @POST("/tasks/upload/{type}")
+    Call<User> uploadDriverPicture(@Header("Authorization") String authHeader,
+                              @Part MultipartBody.Part photo);
+
     // get the drivers info
     @GET("/driver")
     Call<User> getDriverInfo(@Header("Authorization") String authHeader);
@@ -48,8 +57,10 @@ public interface DriverApi {
     Call<User> getTasks(@Header("Authorization") String authHeader);
 
     // upload pics and files ( signature ) related to tasks
+    @Multipart
     @POST("/tasks/upload/{type}")
-    Call<User> uploadTaskFile(); // not fully implemented
+    Call<User> uploadTaskFile(@Header("Authorization") String authHeader,
+                              @Part MultipartBody.Part photo);
 
     // add driver bank info to account after they pass background
     @POST("/driver/bank")
