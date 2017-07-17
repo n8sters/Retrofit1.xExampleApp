@@ -1,5 +1,7 @@
 package com.example.natepowers.driverapitoyapp;
 
+import java.util.List;
+
 import okhttp3.MultipartBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -9,16 +11,6 @@ import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
 
-
-/**
- * Created by:
- * ~~~~~~_  __     __        ____      ______
- * ~~~~~/ |/ ___ _/ /____   / __/___  /_  _____  ___ __ __
- * ~~~~/    / _ `/ __/ -_)  > _/_ _/   / / / _ \/ _ / // /
- * ~~~/_/|_/\_,_/\__/\__/  |_____/    /_/  \___/_//_\_, /
- * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~/___/
- * ~~~~~~~~~~~~~~~~~~~  at Copia PBC   ~~~~~~~~~~~~~~~~~~~~~~
- */
 
 
 public interface DriverApi {
@@ -44,9 +36,10 @@ public interface DriverApi {
 
     // upload picture of the drivers' license, registration etc...
     @Multipart
-    @POST("/tasks/upload/{type}")
+    @POST("/tasks/upload/jpg")
     Call<User> uploadDriverPicture(@Header("Authorization") String authHeader,
-                              @Part MultipartBody.Part photo);
+                                    @Part String description,
+                                    @Part MultipartBody.Part photo);
 
     // get the drivers info
     @GET("/driver")
@@ -54,7 +47,8 @@ public interface DriverApi {
 
     // get list of available tasks
     @GET("/tasks/available")
-    Call<User> getTasks(@Header("Authorization") String authHeader);
+    Call<List<Task>> getAvailableTasks(@Header("Authorization") String authHeader);
+
 
     // upload pics and files ( signature ) related to tasks
     @Multipart

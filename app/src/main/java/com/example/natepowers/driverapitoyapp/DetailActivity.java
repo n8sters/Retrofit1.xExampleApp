@@ -20,13 +20,16 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.lang.reflect.Type;
+import java.util.Collection;
+import java.util.List;
 
-import okhttp3.MediaType;
-import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
-import okhttp3.RequestBody;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -40,6 +43,7 @@ public class DetailActivity extends AppCompatActivity {
 
     TextView taskLabel;
     TextView filePathTextView;
+    TextView apiResponseTv;
     Button getTasksButton;
     Button takePictureButton;
     Button uploadButton;
@@ -59,6 +63,7 @@ public class DetailActivity extends AppCompatActivity {
 
         taskLabel = (TextView) findViewById(R.id.tasks_label_tv);
         filePathTextView = (TextView) findViewById(R.id.file_path_tv);
+        apiResponseTv = (TextView) findViewById(R.id.api_response_tv);
         getTasksButton = (Button) findViewById(R.id.get_tasks_button);
         uploadButton = (Button) findViewById(R.id.upload_button);
         takePictureButton = (Button) findViewById(R.id.take_picture_button);
@@ -85,26 +90,26 @@ public class DetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 User user = new User();
-                uploadPicture(Uri.fromFile(new File(mFilePath)), user);
+                //uploadPicture(user, mFilePath);
             }
         });
 
     }
 
-    private void getAvailableTasks(final User user ) {
+    private void getAvailableTasks(final User user) {
 
         SharedPreferences sharedPref =
                 PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 
         String token = sharedPref.getString("token", null);
 
-        Log.e(TAG, "getAvailableTasks: Token at getAvailableTasks " + token );
+        Log.e(TAG, "getAvailableTasks: Token at getAvailableTasks " + token);
 
 
         String base = UUID + ":" + token;
         String authHeader = "Basic " + Base64.encodeToString(base.getBytes(), Base64.NO_WRAP); // encode login
 
-        Log.e(TAG, "getDriverData: token at start of getDriverData " + token );
+        Log.e(TAG, "getDriverData: token at start of getDriverData " + token);
 
         OkHttpClient.Builder okBuilder = new OkHttpClient.Builder();
 
@@ -121,11 +126,24 @@ public class DetailActivity extends AppCompatActivity {
 
         DriverApi client = retrofit.create(DriverApi.class);
 
-        Call<User> call = client.getTasks(authHeader); // get driver data
+        Call<List<Task>> call = client.getAvailableTasks(authHeader); // get driver data
 
-        call.enqueue(new Callback<User>() {
+        call.enqueue(new Callback<List<Task>>() {
             @Override
-            public void onResponse(Call<User> call, Response<User> response) {
+            public void onResponse(Call<List<Task>> call, Response<List<Task>> response) {
+                Log.e(TAG, "onResponse: " + response.body().toString());
+
+                // from YouTube tutorial
+                String result = response.body().toString();
+
+                Gson gson = new Gson();
+
+                Type collectionType = new TypeToken<Collection<Task>>() {}.getType();
+                Log.e(TAG, "onResponse: Collection type: " + collectionType.toString() );
+                Collection<Task> enums = gson.fromJson(result, collectionType);
+                Task[] taskResponse = enums.toArray(new Task[enums.size()]);
+
+
                 if (response.code() == 200) {
                     // Do awesome stuff
                     Toast.makeText(DetailActivity.this, "It worked!", Toast.LENGTH_SHORT).show();
@@ -136,89 +154,68 @@ public class DetailActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<User> call, Throwable t) {
-                Toast.makeText(DetailActivity.this, "Something went wrong...", Toast.LENGTH_SHORT).show();
+            public void onFailure(Call<List<Task>> call, Throwable t) {
+                Toast.makeText(getApplicationContext(), "OnFailure Triggered", Toast.LENGTH_SHORT).show();
+
             }
+
         });
     }
+//
+//    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+//    private void uploadPicture(User user, String fileUri) {
+//
+//        // Authorization header setup
+//        SharedPreferences sharedPref =
+//                PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+//        String token = sharedPref.getString("token", null);
+//        Log.e(TAG, "getAvailableTasks: Token at getAvailableTasks " + token);
+//        String base = UUID + ":" + token;
+//        String authHeader = "Basic " + Base64.encodeToString(base.getBytes(), Base64.NO_WRAP); // encode login
+//        Log.e(TAG, "getDriverData: token at start of getDriverData " + token);
+//
+//
+//
+//
+//        RequestBody descriptionPart = RequestBody.create(MultipartBody.FORM, "sample description");
+//
+//
+//        OkHttpClient.Builder okBuilder = new OkHttpClient.Builder();
+//
+//        HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
+//        okBuilder.addInterceptor(logging);
+//        logging.setLevel(HttpLoggingInterceptor.Level.BODY); // request everything
+//
+//        Retrofit.Builder builder = new Retrofit.Builder()
+//                .baseUrl("https://driver-gateway.gocopia.com")
+//                .addConverterFactory(GsonConverterFactory.create())
+//                .client(okBuilder.build());
+//
+//        Retrofit retrofit = builder.build();
+//
+//        DriverApi client = retrofit.create(DriverApi.class);
+//
+//        Call<User> call = client.uploadDriverPicture(authHeader, descriptionPart.toString(), fileUri); // get driver data
+//
+//        call.enqueue(new Callback<User>() {
+//            @Override
+//            public void onResponse(Call<User> call, Response<User> response) {
+//                if (response.code() == 200) {
+//                    // Do awesome stuff
+//                    Toast.makeText(DetailActivity.this, "It worked!", Toast.LENGTH_SHORT).show();
+//                } else {
+//                    // Handle other response codes
+//                    Toast.makeText(getApplicationContext(), "Something went wrong here.", Toast.LENGTH_SHORT).show();
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Call<User> call, Throwable t) {
+//                Toast.makeText(DetailActivity.this, "Something went wrong...", Toast.LENGTH_SHORT).show();
+//            }
+//        });
+//    }
 
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-    private void uploadPicture(Uri fileUri, User user) {
-
-        SharedPreferences sharedPref =
-                PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-
-        String token = sharedPref.getString("token", null);
-
-        Log.e(TAG, "getAvailableTasks: Token at getAvailableTasks " + token );
-
-
-        String base = UUID + ":" + token;
-        String authHeader = "Basic " + Base64.encodeToString(base.getBytes(), Base64.NO_WRAP); // encode login
-
-        Log.e(TAG, "getDriverData: token at start of getDriverData " + token );
-
-
-//pass it like this
-        File file = new File("/storage/emulated/0/Download/Corrections 6.jpg");
-        RequestBody requestFile =
-                RequestBody.create(MediaType.parse("multipart/form-data"), file);
-
-// MultipartBody.Part is used to send also the actual file name
-        MultipartBody.Part body =
-                MultipartBody.Part.createFormData("image", file.getName(), requestFile);
-
-// add another part within the multipart request
-        RequestBody fullName =
-                RequestBody.create(
-                        MediaType.parse("multipart/form-data"), "Your Name");
-
-       // call with this service.updateProfile(body)
-
-        file = new File(fileUri.toString());
-        RequestBody reqFile = RequestBody.create(MediaType.parse("image/*"), file);
-        RequestBody picture = RequestBody.create(
-                MediaType.parse(getContentResolver().getType(fileUri)),
-                file);
-
-        MultipartBody.Part part = MultipartBody.Part.createFormData("photo", file.getName(), picture );
-
-
-        OkHttpClient.Builder okBuilder = new OkHttpClient.Builder();
-
-        HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
-        okBuilder.addInterceptor(logging);
-        logging.setLevel(HttpLoggingInterceptor.Level.BODY); // request everything
-
-        Retrofit.Builder builder = new Retrofit.Builder()
-                .baseUrl("https://driver-gateway.gocopia.com")
-                .addConverterFactory(GsonConverterFactory.create())
-                .client(okBuilder.build());
-
-        Retrofit retrofit = builder.build();
-
-        DriverApi client = retrofit.create(DriverApi.class);
-
-        Call<User> call = client.uploadDriverPicture(authHeader, part); // get driver data
-
-        call.enqueue(new Callback<User>() {
-            @Override
-            public void onResponse(Call<User> call, Response<User> response) {
-                if (response.code() == 200) {
-                    // Do awesome stuff
-                    Toast.makeText(DetailActivity.this, "It worked!", Toast.LENGTH_SHORT).show();
-                } else {
-                    // Handle other response codes
-                    Toast.makeText(getApplicationContext(), "Something went wrong here.", Toast.LENGTH_SHORT).show();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<User> call, Throwable t) {
-                Toast.makeText(DetailActivity.this, "Something went wrong...", Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == CAMERA_REQUEST && resultCode == RESULT_OK) {
@@ -236,7 +233,7 @@ public class DetailActivity extends AppCompatActivity {
             mFile = finalFile;
             mFilePath = finalFile.toString();
             filePathTextView.setText(mFilePath);
-            Log.e(TAG, "onActivityResult: FilePath: " + finalFile.toString() );
+            Log.e(TAG, "onActivityResult: FilePath: " + finalFile.toString());
         }
     }
 
@@ -253,5 +250,4 @@ public class DetailActivity extends AppCompatActivity {
         int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
         return cursor.getString(idx);
     }
-
 }
