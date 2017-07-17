@@ -6,4 +6,27 @@
     android:layout_height="match_parent"
     tools:context="com.example.natepowers.driverapitoyapp.DetailActivity">
 
+    <TextView
+        android:id="@+id/tasks_label_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Get Tasks"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="150dp"
+        android:layout_marginLeft="8dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginRight="8dp"
+        app:layout_constraintRight_toRightOf="parent" />
+
+    <Button
+        android:id="@+id/get_tasks_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="0dp"
+        android:layout_marginRight="0dp"
+        android:layout_marginTop="24dp"
+        android:text="GO!"
+        app:layout_constraintLeft_toLeftOf="@+id/tasks_label_tv"
+        app:layout_constraintRight_toRightOf="@+id/tasks_label_tv"
+        app:layout_constraintTop_toBottomOf="@+id/tasks_label_tv" />
 </android.support.constraint.ConstraintLayout>

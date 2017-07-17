@@ -1,7 +1,9 @@
 package com.example.natepowers.driverapitoyapp;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Base64;
@@ -24,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
 
     String TAG = MainActivity.class.getSimpleName();
     String UUID = "557264d2-ee65-41a9-b3b5-83d205562431";
-    String phone = "(650)223-4780";
+    String phone = "(650) 223-4780";
     String token;
     String type;
 
@@ -128,8 +130,8 @@ public class MainActivity extends AppCompatActivity {
                     // Do awesome stuff
                     setAccess(response.body().getToken());
                     Log.e(TAG, "onResponse: Token: " + token);
-                    //User user = new User();
-                    //getDriverData(user);
+                    User user = new User();
+                    getDriverData(user);
                 }
 
             }
@@ -193,5 +195,10 @@ public class MainActivity extends AppCompatActivity {
 
     void setAccess(String s ) {
         token = s;
+        SharedPreferences sharedPref =
+                PreferenceManager.getDefaultSharedPreferences(getApplicationContext()); // currently using default shared prefs
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putString("token", s); // currently being saves as String value
+        editor.apply();
     }
 }
