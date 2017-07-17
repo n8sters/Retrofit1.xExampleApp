@@ -49,8 +49,10 @@ public class MainActivity extends AppCompatActivity {
         getAccess.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                User user = new User(phone);
-                sendNetworkRequest(user);
+//                User user = new User(phone);
+//                sendNetworkRequest(user);
+                Intent intent = new Intent(MainActivity.this, DetailActivity.class);
+                startActivity(intent);
             }
         });
 

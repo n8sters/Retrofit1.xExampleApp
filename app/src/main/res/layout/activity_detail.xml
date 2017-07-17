@@ -29,4 +29,52 @@
         app:layout_constraintLeft_toLeftOf="@+id/tasks_label_tv"
         app:layout_constraintRight_toRightOf="@+id/tasks_label_tv"
         app:layout_constraintTop_toBottomOf="@+id/tasks_label_tv" />
+
+    <Button
+        android:id="@+id/take_picture_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="0dp"
+        android:layout_marginRight="0dp"
+        android:layout_marginTop="32dp"
+        android:text="Take Picture"
+        app:layout_constraintLeft_toLeftOf="@+id/get_tasks_button"
+        app:layout_constraintRight_toRightOf="@+id/get_tasks_button"
+        app:layout_constraintTop_toBottomOf="@+id/get_tasks_button" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="86dp"
+        android:layout_height="103dp"
+        app:srcCompat="?android:attr/actionModeSelectAllDrawable"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/tasks_label_tv"
+        android:layout_marginLeft="8dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginRight="8dp"
+        app:layout_constraintRight_toRightOf="parent" />
+
+    <TextView
+        android:id="@+id/file_path_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        android:layout_marginLeft="8dp"
+        app:layout_constraintLeft_toLeftOf="@+id/imageView"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/imageView"
+        android:layout_marginRight="8dp"
+        app:layout_constraintRight_toRightOf="@+id/imageView" />
+
+    <Button
+        android:id="@+id/upload_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="32dp"
+        android:text="Upload"
+        app:layout_constraintLeft_toLeftOf="@+id/take_picture_button"
+        app:layout_constraintRight_toRightOf="@+id/take_picture_button"
+        app:layout_constraintTop_toBottomOf="@+id/take_picture_button" />
 </android.support.constraint.ConstraintLayout>
