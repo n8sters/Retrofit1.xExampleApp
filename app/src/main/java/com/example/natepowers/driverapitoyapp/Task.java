@@ -74,4 +74,163 @@ public class Task  {
         public static final int ABANDONED = 6;
     }
 
+    public void setTaskId(String taskId) {
+        this.taskId = taskId;
+    }
+
+    public void setCoalescenceId(String coalescenceId) {
+        this.coalescenceId = coalescenceId;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
+
+    public void setType(Integer type) {
+        this.type = type;
+    }
+
+    public void setPickupId(String pickupId) {
+        this.pickupId = pickupId;
+    }
+
+    public void setDropoffId(String dropoffId) {
+        this.dropoffId = dropoffId;
+    }
+
+    public void setArriveBy(Long arriveBy) {
+        this.arriveBy = arriveBy;
+    }
+
+    public void setAssignedTo(String assignedTo) {
+        this.assignedTo = assignedTo;
+    }
+
+    public void setAssignedAt(Long assignedAt) {
+        this.assignedAt = assignedAt;
+    }
+
+    public void setStartedAt(Long startedAt) {
+        this.startedAt = startedAt;
+    }
+
+    public void setArrivedAt(Long arrivedAt) {
+        this.arrivedAt = arrivedAt;
+    }
+
+    public void setCompletedAt(Long completedAt) {
+        this.completedAt = completedAt;
+    }
+
+    public void setFailedAt(Long failedAt) {
+        this.failedAt = failedAt;
+    }
+
+    public void setAbandonedAt(Long abandonedAt) {
+        this.abandonedAt = abandonedAt;
+    }
+
+    public void setMinimumPhotos(Integer minimumPhotos) {
+        this.minimumPhotos = minimumPhotos;
+    }
+
+    public void setSignatureRequired(Boolean signatureRequired) {
+        this.signatureRequired = signatureRequired;
+    }
+
+    public void setPhotos(List<String> photos) {
+        this.photos = photos;
+    }
+
+    public void setSignature(String signature) {
+        this.signature = signature;
+    }
+
+    public void setNotes(String notes) {
+        this.notes = notes;
+    }
+
+    public void setReason(String reason) {
+        this.reason = reason;
+    }
+
+    public String getTaskId() {
+        return taskId;
+    }
+
+    public String getCoalescenceId() {
+        return coalescenceId;
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public Integer getType() {
+        return type;
+    }
+
+    public String getPickupId() {
+        return pickupId;
+    }
+
+    public String getDropoffId() {
+        return dropoffId;
+    }
+
+    public Long getArriveBy() {
+        return arriveBy;
+    }
+
+    public String getAssignedTo() {
+        return assignedTo;
+    }
+
+    public Long getAssignedAt() {
+        return assignedAt;
+    }
+
+    public Long getStartedAt() {
+        return startedAt;
+    }
+
+    public Long getArrivedAt() {
+        return arrivedAt;
+    }
+
+    public Long getCompletedAt() {
+        return completedAt;
+    }
+
+    public Long getFailedAt() {
+        return failedAt;
+    }
+
+    public Long getAbandonedAt() {
+        return abandonedAt;
+    }
+
+    public Integer getMinimumPhotos() {
+        return minimumPhotos;
+    }
+
+    public Boolean getSignatureRequired() {
+        return signatureRequired;
+    }
+
+    public List<String> getPhotos() {
+        return photos;
+    }
+
+    public String getSignature() {
+        return signature;
+    }
+
+    public String getNotes() {
+        return notes;
+    }
+
+    public String getReason() {
+        return reason;
+    }
 }

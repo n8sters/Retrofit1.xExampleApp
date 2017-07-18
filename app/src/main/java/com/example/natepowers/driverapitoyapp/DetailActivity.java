@@ -20,13 +20,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
+import org.json.JSONArray;
+import org.json.JSONException;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.lang.reflect.Type;
-import java.util.Collection;
+import java.util.ArrayList;
 import java.util.List;
 
 import okhttp3.OkHttpClient;
@@ -133,24 +132,17 @@ public class DetailActivity extends AppCompatActivity {
             public void onResponse(Call<List<Task>> call, Response<List<Task>> response) {
                 Log.e(TAG, "onResponse: " + response.body().toString());
 
-                // from YouTube tutorial
                 String result = response.body().toString();
 
-                Gson gson = new Gson();
+                List<Task> tasks = response.body();
 
-                Type collectionType = new TypeToken<Collection<Task>>() {}.getType();
-                Log.e(TAG, "onResponse: Collection type: " + collectionType.toString() );
-                Collection<Task> enums = gson.fromJson(result, collectionType);
-                Task[] taskResponse = enums.toArray(new Task[enums.size()]);
+                Task[] arr = new Task[tasks.size()];
+                arr = tasks.toArray(arr);
 
-
-                if (response.code() == 200) {
-                    // Do awesome stuff
-                    Toast.makeText(DetailActivity.this, "It worked!", Toast.LENGTH_SHORT).show();
-                } else {
-                    // Handle other response codes
-                    Toast.makeText(getApplicationContext(), "Something went wrong here.", Toast.LENGTH_SHORT).show();
+                for( Task t : arr ) {
+                    Log.e(TAG, "onResponse: Task id: " + t.getTaskId() );
                 }
+
             }
 
             @Override
@@ -161,7 +153,19 @@ public class DetailActivity extends AppCompatActivity {
 
         });
     }
-//
+    ArrayList<String> jsonStringToArray(String jsonString) throws JSONException {
+
+        ArrayList<String> stringArray = new ArrayList<String>();
+
+        JSONArray jsonArray = new JSONArray(jsonString);
+
+        for (int i = 0; i < jsonArray.length(); i++) {
+            stringArray.add(jsonArray.getString(i));
+        }
+
+        return stringArray;
+    }
+
 //    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
 //    private void uploadPicture(User user, String fileUri) {
 //
