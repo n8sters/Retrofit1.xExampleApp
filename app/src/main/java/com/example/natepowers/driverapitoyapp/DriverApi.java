@@ -5,7 +5,6 @@ import java.util.List;
 import okhttp3.MultipartBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
-import retrofit2.http.Field;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Multipart;
@@ -64,12 +63,12 @@ public interface DriverApi {
 
     // update driver profile
     @POST("/driver")
-    Call<User> updateDriver(@Header("Authorization") String authHeader,
-                            @Field("info") String body);
+    Call<User> updateDriver(@Header("Authorization") String authHeader, //DONE
+                            @Body User user);
 
-    // list available tasks
+    // list assigned tasks
     @GET("/tasks")
-    Call<User> getAssignedTasks(@Header("Authorization") String authHeader);
+    Call<List<Task>> getAssignedTasks(@Header("Authorization") String authHeader);
 
     // get task by id
     @GET("/tasks/{taskId}")

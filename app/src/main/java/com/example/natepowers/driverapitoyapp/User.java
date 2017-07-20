@@ -84,6 +84,29 @@ public class User {
         this.phone = phone;
     }
 
+    public User(String firstname, String lastname, String nickname, String email) {
+        this.firstname = firstname;
+        this.address = address;
+        this.sandbox = sandbox;
+        this.dobDay = dobDay;
+        this.availability = availability;
+        this.type = type;
+        this.lastname = lastname;
+        this.emailVerified = emailVerified;
+        this.phone = phone;
+        this.tzId = tzId;
+        this.nickname = nickname;
+        this.dobYear = dobYear;
+        this.dobMonth = dobMonth;
+        this.email = email;
+        this.status = status;
+        this.regions = regions;
+        this.token = token;
+        this.success = success;
+        this.UUID = UUID;
+        this.confirmId = confirmId;
+    }
+
     public String getFirstname() {
         return firstname;
     }

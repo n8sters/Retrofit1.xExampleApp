@@ -38,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
         final TextView label = (TextView) findViewById(R.id.textView);
         final EditText phoneEditText = (EditText) findViewById(R.id.editText);
 
+        Button uploadButton = (Button) findViewById(R.id.upload_button);
 
         Button getAccess = (Button) findViewById(R.id.request_access_button);
 
@@ -71,6 +72,14 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 User user = new User();
                 getDriverData(user);
+            }
+        });
+
+        uploadButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, UpdateDriverActivity.class);
+                startActivity(intent);
             }
         });
     }
