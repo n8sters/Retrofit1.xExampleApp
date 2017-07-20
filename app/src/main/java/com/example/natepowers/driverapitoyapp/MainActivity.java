@@ -27,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
     String UUID = "557264d2-ee65-41a9-b3b5-83d205562431";
     String phone = "(650) 223-4780";
     String token;
-    String type;
+    int type;
 
 
     @Override
@@ -133,7 +133,7 @@ public class MainActivity extends AppCompatActivity {
                     SharedPreferences.Editor editor = pref.edit();
                     String t = response.body().getToken();
                     token = response.body().getToken();
-                    editor.putString("token", t );
+                    editor.putString("token", token );
                     if ( t.length() > 6 ) {
                         editor.putBoolean("isLoggedIn", true); // sets user as logged i
                         Log.e(TAG, "onResponse: User logged in! " );
@@ -186,8 +186,7 @@ public class MainActivity extends AppCompatActivity {
                 if (response.code() == 200) {
                     // Do awesome stuff
                     type = response.body().getType();
-                    int i = Integer.parseInt(type);
-                    switch (i) {
+                    switch (type) {
                         case 1:
                             Intent intent = new Intent(MainActivity.this, DetailActivity.class);
                             startActivity(intent);

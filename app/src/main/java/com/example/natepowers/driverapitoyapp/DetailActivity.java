@@ -195,8 +195,8 @@ public class DetailActivity extends AppCompatActivity {
             public void onResponse(Call<User> call, Response<User> response) {
                 if (response.code() == 200) {
                     // Do awesome stuff
-                    Log.e(TAG, "onResponse: " + response.body().getSuccess());
-                    Toast.makeText(DetailActivity.this, "Result: " + response.body().getSuccess(), Toast.LENGTH_SHORT).show();
+                    Log.e(TAG, "onResponse: " + response.body().isSuccess());
+                    Toast.makeText(DetailActivity.this, "Result: " + response.body().isSuccess(), Toast.LENGTH_SHORT).show();
                     SharedPreferences pref = getApplicationContext().getSharedPreferences("session_management", 0); // 0 - for private mode
                     SharedPreferences.Editor editor = pref.edit();
                     editor.putBoolean("isLoggedIn", false);

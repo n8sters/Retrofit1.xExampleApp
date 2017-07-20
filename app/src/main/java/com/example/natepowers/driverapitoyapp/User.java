@@ -1,7 +1,5 @@
 package com.example.natepowers.driverapitoyapp;
 
-import com.google.gson.annotations.SerializedName;
-
 import java.util.List;
 
 /**
@@ -17,20 +15,19 @@ import java.util.List;
 
 public class User {
 
-    private String phone;
-    private String confirmId;
-    private String UUID;
-    String success;
-    String type;
+
+
     /**
      * firstname : Nate
      * address : {"country":"united states","city":"Berkeley","street":"2450 Warrint st","street2":"35B","state":"California","postal":"94704"}
      * regions : [{"regionId":"J2nbd9Aqmp","descriptor":"San Francisco"}]
      * sandbox : true
      * dobDay : 28
+     * availability : {"sunday":0,"saturday":14336,"tuesday":261888,"wednesday":261888,"thursday":261888,"friday":261888,"monday":261888}
      * type : 1
      * lastname : Powers
      * emailVerified : false
+     * phone : +16502234780
      * tzId : America/Los_Angeles
      * nickname : N8sters
      * dobYear : 1993
@@ -43,10 +40,11 @@ public class User {
     private AddressBean address;
     private boolean sandbox;
     private int dobDay;
-    @SerializedName("type")
-    private int typeX;
+    private AvailabilityBean availability;
+    private int type;
     private String lastname;
     private boolean emailVerified;
+    private String phone;
     private String tzId;
     private String nickname;
     private int dobYear;
@@ -54,33 +52,29 @@ public class User {
     private String email;
     private int status;
     private List<RegionsBean> regions;
-
-    User() {
-
-    }
-
-
-
-
-    public String getSuccess() {
-        return success;
-    }
-
-    public void setToken(String token1) {
-        token = token1;
-    }
+    /**
+     * token : eyJhbGciOiJIUzI1NiJ9.eyJVU0lEIjoiYTk4MmYzM2FhODViNjQ0OTNiOTNjYzc3Zjk3YjYyMDVlNTliZTc1OSIsInRzIjoxNTAwMzExMjcxfQ.-3dDEe5LTKEeVCvuV7JUbJbYQzJCucsqx5u40yXJp8w
+     */
 
     private String token;
+    /**
+     * success : true
+     */
 
-    public String getToken() {
-        return token;
+    private boolean success;
+    /**
+     * UUID : 557264d2-ee65-41a9-b3b5-83d2-5562431
+     * confirmId : 107539
+     */
+
+    private String UUID;
+    private String confirmId;
+
+
+    public User() {
     }
 
-    public String getType() {
-        return type;
-    }
-
-    public User(String phone) {
+    public User(String phone ) {
         this.phone = phone;
     }
 
@@ -88,24 +82,6 @@ public class User {
         this.UUID = UUID;
         this.confirmId = confirmId;
         this.phone = phone;
-    }
-
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public String getAccessCode() {
-        return confirmId;
-    }
-
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
-    public void setAccessCode(String accessCode) {
-        this.confirmId = accessCode;
     }
 
     public String getFirstname() {
@@ -140,12 +116,20 @@ public class User {
         this.dobDay = dobDay;
     }
 
-    public int getTypeX() {
-        return typeX;
+    public AvailabilityBean getAvailability() {
+        return availability;
     }
 
-    public void setTypeX(int typeX) {
-        this.typeX = typeX;
+    public void setAvailability(AvailabilityBean availability) {
+        this.availability = availability;
+    }
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
     }
 
     public String getLastname() {
@@ -162,6 +146,14 @@ public class User {
 
     public void setEmailVerified(boolean emailVerified) {
         this.emailVerified = emailVerified;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
     public String getTzId() {
@@ -220,6 +212,37 @@ public class User {
         this.regions = regions;
     }
 
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
+    public boolean isSuccess() {
+        return success;
+    }
+
+    public void setSuccess(boolean success) {
+        this.success = success;
+    }
+
+    public String getUUID() {
+        return UUID;
+    }
+
+    public void setUUID(String UUID) {
+        this.UUID = UUID;
+    }
+
+    public String getConfirmId() {
+        return confirmId;
+    }
+
+    public void setConfirmId(String confirmId) {
+        this.confirmId = confirmId;
+    }
 
     public static class AddressBean {
         /**
@@ -284,6 +307,82 @@ public class User {
 
         public void setPostal(String postal) {
             this.postal = postal;
+        }
+    }
+
+    public static class AvailabilityBean {
+        /**
+         * sunday : 0
+         * saturday : 14336
+         * tuesday : 261888
+         * wednesday : 261888
+         * thursday : 261888
+         * friday : 261888
+         * monday : 261888
+         */
+
+        private int sunday;
+        private int saturday;
+        private int tuesday;
+        private int wednesday;
+        private int thursday;
+        private int friday;
+        private int monday;
+
+        public int getSunday() {
+            return sunday;
+        }
+
+        public void setSunday(int sunday) {
+            this.sunday = sunday;
+        }
+
+        public int getSaturday() {
+            return saturday;
+        }
+
+        public void setSaturday(int saturday) {
+            this.saturday = saturday;
+        }
+
+        public int getTuesday() {
+            return tuesday;
+        }
+
+        public void setTuesday(int tuesday) {
+            this.tuesday = tuesday;
+        }
+
+        public int getWednesday() {
+            return wednesday;
+        }
+
+        public void setWednesday(int wednesday) {
+            this.wednesday = wednesday;
+        }
+
+        public int getThursday() {
+            return thursday;
+        }
+
+        public void setThursday(int thursday) {
+            this.thursday = thursday;
+        }
+
+        public int getFriday() {
+            return friday;
+        }
+
+        public void setFriday(int friday) {
+            this.friday = friday;
+        }
+
+        public int getMonday() {
+            return monday;
+        }
+
+        public void setMonday(int monday) {
+            this.monday = monday;
         }
     }
 
