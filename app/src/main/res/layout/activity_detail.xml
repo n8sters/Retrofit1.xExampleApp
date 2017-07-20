@@ -37,7 +37,7 @@
         android:layout_marginLeft="0dp"
         android:layout_marginRight="0dp"
         android:layout_marginTop="32dp"
-        android:text="Take Picture"
+        android:text="Log user out"
         app:layout_constraintLeft_toLeftOf="@+id/get_tasks_button"
         app:layout_constraintRight_toRightOf="@+id/get_tasks_button"
         app:layout_constraintTop_toBottomOf="@+id/get_tasks_button" />
@@ -73,7 +73,7 @@
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginTop="32dp"
-        android:text="Upload"
+        android:text="Get Status"
         app:layout_constraintLeft_toLeftOf="@+id/take_picture_button"
         app:layout_constraintRight_toRightOf="@+id/take_picture_button"
         app:layout_constraintTop_toBottomOf="@+id/take_picture_button" />

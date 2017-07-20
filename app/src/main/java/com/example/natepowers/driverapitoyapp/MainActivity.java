@@ -3,7 +3,6 @@ package com.example.natepowers.driverapitoyapp;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Base64;
@@ -49,10 +48,10 @@ public class MainActivity extends AppCompatActivity {
         getAccess.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                User user = new User(phone);
-//                sendNetworkRequest(user);
-                Intent intent = new Intent(MainActivity.this, DetailActivity.class);
-                startActivity(intent);
+                User user = new User(phone);
+                sendNetworkRequest(user);
+//                Intent intent = new Intent(MainActivity.this, DetailActivity.class);
+//                startActivity(intent);
             }
         });
 
@@ -130,8 +129,18 @@ public class MainActivity extends AppCompatActivity {
             public void onResponse(Call<User> call, Response<User> response) {
                 if (response.code() == 200) {
                     // Do awesome stuff
-                    setAccess(response.body().getToken());
-                    Log.e(TAG, "onResponse: Token: " + token);
+                    SharedPreferences pref = getApplicationContext().getSharedPreferences("session_management", 0); // 0 - for private mode
+                    SharedPreferences.Editor editor = pref.edit();
+                    String t = response.body().getToken();
+                    token = response.body().getToken();
+                    editor.putString("token", t );
+                    if ( t.length() > 6 ) {
+                        editor.putBoolean("isLoggedIn", true); // sets user as logged i
+                        Log.e(TAG, "onResponse: User logged in! " );
+                    }
+                    editor.apply(); // apply changes
+                    Log.e(TAG, "onResponse: Token string: " + t);
+                    Log.e(TAG, "onResponse: token raw " + response.body().getToken() );
                     User user = new User();
                     getDriverData(user);
                 }
@@ -145,6 +154,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
     }
+
 
     private void getDriverData(final User user ) {
 
@@ -197,10 +207,12 @@ public class MainActivity extends AppCompatActivity {
 
     void setAccess(String s ) {
         token = s;
-        SharedPreferences sharedPref =
-                PreferenceManager.getDefaultSharedPreferences(getApplicationContext()); // currently using default shared prefs
-        SharedPreferences.Editor editor = sharedPref.edit();
+        SharedPreferences pref = getApplicationContext().getSharedPreferences("session_management", 0); // 0 - for private mode
+        SharedPreferences.Editor editor = pref.edit();
         editor.putString("token", s); // currently being saves as String value
+        if ( s.length() > 6 ) {
+            editor.putBoolean("isLoggedIn", true); // sets user as logged i
+        }
         editor.apply();
     }
 }

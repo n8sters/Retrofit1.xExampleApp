@@ -50,6 +50,7 @@ public class DetailActivity extends AppCompatActivity {
     String UUID = "557264d2-ee65-41a9-b3b5-83d205562431";
     String phone = "(650) 223-4780";
     String mFilePath;
+    String token;
     File mFile;
 
     private static final int CAMERA_REQUEST = 8090;
@@ -79,8 +80,8 @@ public class DetailActivity extends AppCompatActivity {
         takePictureButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                startActivityForResult(intent, CAMERA_REQUEST);
+                User user = new User();
+                logUserOut(user);
             }
         });
 
@@ -88,10 +89,17 @@ public class DetailActivity extends AppCompatActivity {
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
             public void onClick(View view) {
-                User user = new User();
-                //uploadPicture(user, mFilePath);
+                SharedPreferences prefs = getSharedPreferences("session_management", 0);
+                Toast.makeText(DetailActivity.this, "User logged in status: " + prefs.getBoolean("isLoggedIn", false), Toast.LENGTH_SHORT).show();
+
             }
         });
+
+        SharedPreferences prefs = getSharedPreferences("session_management", 0);
+        boolean isLoggedIn = prefs.getBoolean("isLoggedIn", false);
+
+
+        filePathTextView.setText(String.valueOf(isLoggedIn));
 
     }
 
@@ -153,6 +161,135 @@ public class DetailActivity extends AppCompatActivity {
 
         });
     }
+
+    private void logUserOut( final User user ) {
+
+        SharedPreferences sharedPref =
+                PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+
+        token = sharedPref.getString("token", null);
+
+        String base = UUID + ":" + token;
+        String authHeader = "Basic " + Base64.encodeToString(base.getBytes(), Base64.NO_WRAP); // encode login
+
+        Log.e(TAG, "getDriverData: token at start of getDriverData " + token );
+        OkHttpClient.Builder okBuilder = new OkHttpClient.Builder();
+
+        HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
+        okBuilder.addInterceptor(logging);
+        logging.setLevel(HttpLoggingInterceptor.Level.BODY); // request everything
+
+        Retrofit.Builder builder = new Retrofit.Builder()
+                .baseUrl("https://driver-gateway.gocopia.com")
+                .addConverterFactory(GsonConverterFactory.create())
+                .client(okBuilder.build());
+
+        Retrofit retrofit = builder.build();
+
+        DriverApi client = retrofit.create(DriverApi.class);
+
+        Call<User> call = client.logUserOut(authHeader); // request access code
+
+        call.enqueue(new Callback<User>() {
+            @Override
+            public void onResponse(Call<User> call, Response<User> response) {
+                if (response.code() == 200) {
+                    // Do awesome stuff
+                    Log.e(TAG, "onResponse: " + response.body().getSuccess());
+                    Toast.makeText(DetailActivity.this, "Result: " + response.body().getSuccess(), Toast.LENGTH_SHORT).show();
+                    SharedPreferences pref = getApplicationContext().getSharedPreferences("session_management", 0); // 0 - for private mode
+                    SharedPreferences.Editor editor = pref.edit();
+                    editor.putBoolean("isLoggedIn", false);
+                    editor.apply();
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<User> call, Throwable t) {
+                Toast.makeText(DetailActivity.this, "Something went wrong...", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+    }
+
+    void setAccess(String s ) {
+        token = s;
+        SharedPreferences pref = getApplicationContext().getSharedPreferences("session_management", 0); // 0 - for private mode
+        SharedPreferences.Editor editor = pref.edit();
+        editor.putString("token", s); // currently being saves as String value
+        if ( s.length() > 6 ) {
+            editor.putBoolean("isLoggedIn", true); // sets user as logged i
+        }
+        editor.apply();
+    }
+
+
+    private void updateDriverInfo( User user ) {
+
+
+        SharedPreferences sharedPref =
+                PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+
+        String token = sharedPref.getString("token", null);
+
+        Log.e(TAG, "getAvailableTasks: Token at getAvailableTasks " + token);
+
+
+        String base = UUID + ":" + token;
+        String authHeader = "Basic " + Base64.encodeToString(base.getBytes(), Base64.NO_WRAP); // encode login
+
+        Log.e(TAG, "getDriverData: token at start of getDriverData " + token);
+
+        OkHttpClient.Builder okBuilder = new OkHttpClient.Builder();
+
+        HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
+        okBuilder.addInterceptor(logging);
+        logging.setLevel(HttpLoggingInterceptor.Level.BODY); // request everything
+
+        Retrofit.Builder builder = new Retrofit.Builder()
+                .baseUrl("https://driver-gateway.gocopia.com")
+                .addConverterFactory(GsonConverterFactory.create())
+                .client(okBuilder.build());
+
+        Retrofit retrofit = builder.build();
+
+        DriverApi client = retrofit.create(DriverApi.class);
+
+        Call<List<Task>> call = client.getAvailableTasks(authHeader); // get driver data
+
+        call.enqueue(new Callback<List<Task>>() {
+            @Override
+            public void onResponse(Call<List<Task>> call, Response<List<Task>> response) {
+                Log.e(TAG, "onResponse: " + response.body().toString());
+
+                String result = response.body().toString();
+
+                List<Task> tasks = response.body();
+
+                Task[] arr = new Task[tasks.size()];
+                arr = tasks.toArray(arr);
+
+                for( Task t : arr ) {
+                    Log.e(TAG, "onResponse: Task id: " + t.getTaskId() );
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<List<Task>> call, Throwable t) {
+                Toast.makeText(getApplicationContext(), "OnFailure Triggered", Toast.LENGTH_SHORT).show();
+
+            }
+
+        });
+
+
+
+
+    }
+
+
     ArrayList<String> jsonStringToArray(String jsonString) throws JSONException {
 
         ArrayList<String> stringArray = new ArrayList<String>();

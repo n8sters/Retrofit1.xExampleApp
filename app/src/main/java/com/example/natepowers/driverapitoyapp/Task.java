@@ -58,6 +58,17 @@ public class Task  {
     public String notes;
     @SerializedName(value = "Reason", alternate = "reason")
     public String reason;
+    @SerializedName(value = "firstname", alternate = "firstName")
+    public String firstName;
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getFirstName() {
+
+        return firstName;
+    }
 
     public static class Type {
         public static final int PICKUP = 0;

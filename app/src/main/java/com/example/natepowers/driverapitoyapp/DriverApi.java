@@ -5,6 +5,7 @@ import java.util.List;
 import okhttp3.MultipartBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.Field;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Multipart;
@@ -16,13 +17,14 @@ import retrofit2.http.Part;
 public interface DriverApi {
 
 
+
     // requests an access code, which expires in 5-10 min
     @POST("/sessions/authenticate/request")
-    Call<User> requestAccessCode(@Body User user);
+    Call<User> requestAccessCode(@Body User user); // DONE
 
     // request access token to log in
     @POST("/sessions/authenticate")
-    Call<User> requestToken(@Body User user);
+    Call<User> requestToken(@Body User user); // DONE
 
 
     // ----------------- BELOW METHODS ARE ALL AUTH REQUIRED ------------------ //
@@ -32,7 +34,7 @@ public interface DriverApi {
 
     // log user out and clear token
     @POST("/sessions/deauthenticate")
-    Call<User> logUserOut(@Header("Authorization") String authHeader); // correct?
+    Call<User> logUserOut(@Header("Authorization") String authHeader); // DONE
 
     // upload picture of the drivers' license, registration etc...
     @Multipart
@@ -43,11 +45,11 @@ public interface DriverApi {
 
     // get the drivers info
     @GET("/driver")
-    Call<User> getDriverInfo(@Header("Authorization") String authHeader);
+    Call<User> getDriverInfo(@Header("Authorization") String authHeader); //DONE
 
     // get list of available tasks
     @GET("/tasks/available")
-    Call<List<Task>> getAvailableTasks(@Header("Authorization") String authHeader);
+    Call<List<Task>> getAvailableTasks(@Header("Authorization") String authHeader); //DONE
 
 
     // upload pics and files ( signature ) related to tasks
@@ -62,7 +64,8 @@ public interface DriverApi {
 
     // update driver profile
     @POST("/driver")
-    Call<User> updateDriver(@Header("Authorization") String authHeader);
+    Call<User> updateDriver(@Header("Authorization") String authHeader,
+                            @Field("info") String body);
 
     // list available tasks
     @GET("/tasks")
