@@ -35,15 +35,15 @@ public class TaskTestActivity extends AppCompatActivity {
 
         mContent = (TextView) findViewById(R.id.content_tv);
 
-        mGetTasksButton = (Button) findViewById(R.id.get_tasks_button);
+        mGetTasksButton = (Button) findViewById(R.id.get_assigned_tasks_button);
 
-    mGetTasksButton.setOnClickListener(new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-            User user = new User();
-            getAssignedTasks(user);
-        }
-    });
+        mGetTasksButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                User user = new User();
+                getAssignedTasks(user);
+            }
+        });
 
     }
 
@@ -86,20 +86,17 @@ public class TaskTestActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<List<Task>> call, Response<List<Task>> response) {
 
-                if (response.code() == 200 ) {
-                    if ( response.body().size() > 1 ) {
+                if (response.code() == 200) {
+                    if (response.body().size() > 1) {
                         Log.e(TAG, "onResponse: " + response.body().toString());
-
-                        String result = response.body().toString();
 
                         List<Task> tasks = response.body();
 
                         Task[] arr = new Task[tasks.size()];
                         arr = tasks.toArray(arr);
 
-                        for( Task t : arr ) {
-                            Log.e(TAG, "onResponse: Task id: " + t.getTaskId() );
-                            mContent.setText(response.body().toString());
+                        for (Task t : arr) {
+                            mContent.setText(t.getPickup().getAddress().getDirections());
                         }
 
                     } else {

@@ -1,9 +1,5 @@
 package com.example.natepowers.driverapitoyapp;
 
-import com.google.gson.annotations.SerializedName;
-
-import java.util.List;
-
 /**
  * Created by:
  * ~~~~~~_  __     __        ____      ______
@@ -18,230 +14,295 @@ import java.util.List;
 public class Task  {
 
 
-    @SerializedName(value = "TaskId", alternate = "taskId")
-    public String taskId;
-    @SerializedName(value = "CoalescenceId", alternate = "coalescenceId")
-    public String coalescenceId;
-    @SerializedName(value = "Status", alternate = "status")
-    public Integer status = Status.UNASSIGNED;
-    @SerializedName(value = "Type", alternate = "type")
-    public Integer type = Type.PICKUP;
-    @SerializedName(value = "PickupId", alternate = "pickupId")
-    public String pickupId;
-    @SerializedName(value = "DropoffId", alternate = "dropoffId")
-    public String dropoffId;
-    @SerializedName(value = "ArriveBy", alternate = "arriveBy")
-    public Long arriveBy;
-    @SerializedName(value = "AssignedTo", alternate = "assignedTo")
-    public String assignedTo;
-    @SerializedName(value = "AssignedAt", alternate = "assignedAt")
-    public Long assignedAt;
-    @SerializedName(value = "StartedAt", alternate = "startedAt")
-    public Long startedAt;
-    @SerializedName(value = "ArrivedAt", alternate = "arrivedAt")
-    public Long arrivedAt;
-    @SerializedName(value = "CompletedAt", alternate = "completedAt")
-    public Long completedAt;
-    @SerializedName(value = "FailedAt", alternate = "failedAt")
-    public Long failedAt;
-    @SerializedName(value = "AbandonedAt", alternate = "abandonedAt")
-    public Long abandonedAt;
-    @SerializedName(value = "MinimumPhotos", alternate = "minimumPhotos")
-    public Integer minimumPhotos = 0;
-    @SerializedName(value = "SignatureRequired", alternate = "signatureRequired")
-    public Boolean signatureRequired = false;
-    @SerializedName(value = "Photos", alternate = "photos")
-    public List<String> photos;
-    @SerializedName(value = "Signature", alternate = "signature")
-    public String signature;
-    @SerializedName(value = "Notes", alternate = "notes")
-    public String notes;
-    @SerializedName(value = "Reason", alternate = "reason")
-    public String reason;
-    @SerializedName(value = "firstname", alternate = "firstName")
-    public String firstName;
+    /**
+     * arriveBy : 1500584400
+     * assignedAt : 1500590565
+     * signatureRequired : false
+     * pickup : {"pickupAt":1500584400,"address":{"country":"United States","lng":-122.4166164,"directions":"Please use service elevator located in the loading dock on Jesse Street (between Market and Mission, off of 10th St).","city":"San Francisco","street":"1355 Market Street","street2":"3rd Floor","state":"California","postal":"94103","lat":37.7767687,"addressId":"Tm3uVbNFNA"},"pickupId":"lDeklOHoBQ","user":{"firstname":"Cristina","phone":"+14154302724","company":"Microsoft","email":"cakimoff@yammer-inc.com","lastname":"Fink"}}
+     * type : 0
+     * taskId : uO_XNFfykA
+     * status : 1
+     * minimumPhotos : 0
+     */
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
+    private int arriveBy;
+    private int assignedAt;
+    private boolean signatureRequired;
+    private PickupBean pickup;
+    private int type;
+    private String taskId;
+    private int status;
+    private int minimumPhotos;
+
+    public int getArriveBy() {
+        return arriveBy;
     }
 
-    public String getFirstName() {
-
-        return firstName;
-    }
-
-    public static class Type {
-        public static final int PICKUP = 0;
-        public static final int DROPOFF = 1;
-    }
-
-    public static class Status {
-        public static final int UNASSIGNED = 0;
-        public static final int ASSIGNED = 1;
-        public static final int STARTED = 2;
-        public static final int ARRIVED = 3;
-        public static final int COMPLETED = 4;
-        public static final int FAILED = 5;
-        public static final int ABANDONED = 6;
-    }
-
-    public void setTaskId(String taskId) {
-        this.taskId = taskId;
-    }
-
-    public void setCoalescenceId(String coalescenceId) {
-        this.coalescenceId = coalescenceId;
-    }
-
-    public void setStatus(Integer status) {
-        this.status = status;
-    }
-
-    public void setType(Integer type) {
-        this.type = type;
-    }
-
-    public void setPickupId(String pickupId) {
-        this.pickupId = pickupId;
-    }
-
-    public void setDropoffId(String dropoffId) {
-        this.dropoffId = dropoffId;
-    }
-
-    public void setArriveBy(Long arriveBy) {
+    public void setArriveBy(int arriveBy) {
         this.arriveBy = arriveBy;
     }
 
-    public void setAssignedTo(String assignedTo) {
-        this.assignedTo = assignedTo;
+    public int getAssignedAt() {
+        return assignedAt;
     }
 
-    public void setAssignedAt(Long assignedAt) {
+    public void setAssignedAt(int assignedAt) {
         this.assignedAt = assignedAt;
     }
 
-    public void setStartedAt(Long startedAt) {
-        this.startedAt = startedAt;
+    public boolean isSignatureRequired() {
+        return signatureRequired;
     }
 
-    public void setArrivedAt(Long arrivedAt) {
-        this.arrivedAt = arrivedAt;
-    }
-
-    public void setCompletedAt(Long completedAt) {
-        this.completedAt = completedAt;
-    }
-
-    public void setFailedAt(Long failedAt) {
-        this.failedAt = failedAt;
-    }
-
-    public void setAbandonedAt(Long abandonedAt) {
-        this.abandonedAt = abandonedAt;
-    }
-
-    public void setMinimumPhotos(Integer minimumPhotos) {
-        this.minimumPhotos = minimumPhotos;
-    }
-
-    public void setSignatureRequired(Boolean signatureRequired) {
+    public void setSignatureRequired(boolean signatureRequired) {
         this.signatureRequired = signatureRequired;
     }
 
-    public void setPhotos(List<String> photos) {
-        this.photos = photos;
+    public PickupBean getPickup() {
+        return pickup;
     }
 
-    public void setSignature(String signature) {
-        this.signature = signature;
+    public void setPickup(PickupBean pickup) {
+        this.pickup = pickup;
     }
 
-    public void setNotes(String notes) {
-        this.notes = notes;
+    public int getType() {
+        return type;
     }
 
-    public void setReason(String reason) {
-        this.reason = reason;
+    public void setType(int type) {
+        this.type = type;
     }
 
     public String getTaskId() {
         return taskId;
     }
 
-    public String getCoalescenceId() {
-        return coalescenceId;
+    public void setTaskId(String taskId) {
+        this.taskId = taskId;
     }
 
-    public Integer getStatus() {
+    public int getStatus() {
         return status;
     }
 
-    public Integer getType() {
-        return type;
+    public void setStatus(int status) {
+        this.status = status;
     }
 
-    public String getPickupId() {
-        return pickupId;
-    }
-
-    public String getDropoffId() {
-        return dropoffId;
-    }
-
-    public Long getArriveBy() {
-        return arriveBy;
-    }
-
-    public String getAssignedTo() {
-        return assignedTo;
-    }
-
-    public Long getAssignedAt() {
-        return assignedAt;
-    }
-
-    public Long getStartedAt() {
-        return startedAt;
-    }
-
-    public Long getArrivedAt() {
-        return arrivedAt;
-    }
-
-    public Long getCompletedAt() {
-        return completedAt;
-    }
-
-    public Long getFailedAt() {
-        return failedAt;
-    }
-
-    public Long getAbandonedAt() {
-        return abandonedAt;
-    }
-
-    public Integer getMinimumPhotos() {
+    public int getMinimumPhotos() {
         return minimumPhotos;
     }
 
-    public Boolean getSignatureRequired() {
-        return signatureRequired;
+    public void setMinimumPhotos(int minimumPhotos) {
+        this.minimumPhotos = minimumPhotos;
     }
 
-    public List<String> getPhotos() {
-        return photos;
-    }
+    public static class PickupBean {
+        /**
+         * pickupAt : 1500584400
+         * address : {"country":"United States","lng":-122.4166164,"directions":"Please use service elevator located in the loading dock on Jesse Street (between Market and Mission, off of 10th St).","city":"San Francisco","street":"1355 Market Street","street2":"3rd Floor","state":"California","postal":"94103","lat":37.7767687,"addressId":"Tm3uVbNFNA"}
+         * pickupId : lDeklOHoBQ
+         * user : {"firstname":"Cristina","phone":"+14154302724","company":"Microsoft","email":"cakimoff@yammer-inc.com","lastname":"Fink"}
+         */
 
-    public String getSignature() {
-        return signature;
-    }
+        private int pickupAt;
+        private AddressBean address;
+        private String pickupId;
+        private UserBean user;
 
-    public String getNotes() {
-        return notes;
-    }
+        public int getPickupAt() {
+            return pickupAt;
+        }
 
-    public String getReason() {
-        return reason;
+        public void setPickupAt(int pickupAt) {
+            this.pickupAt = pickupAt;
+        }
+
+        public AddressBean getAddress() {
+            return address;
+        }
+
+        public void setAddress(AddressBean address) {
+            this.address = address;
+        }
+
+        public String getPickupId() {
+            return pickupId;
+        }
+
+        public void setPickupId(String pickupId) {
+            this.pickupId = pickupId;
+        }
+
+        public UserBean getUser() {
+            return user;
+        }
+
+        public void setUser(UserBean user) {
+            this.user = user;
+        }
+
+        public static class AddressBean {
+            /**
+             * country : United States
+             * lng : -122.4166164
+             * directions : Please use service elevator located in the loading dock on Jesse Street (between Market and Mission, off of 10th St).
+             * city : San Francisco
+             * street : 1355 Market Street
+             * street2 : 3rd Floor
+             * state : California
+             * postal : 94103
+             * lat : 37.7767687
+             * addressId : Tm3uVbNFNA
+             */
+
+            private String country;
+            private double lng;
+            private String directions;
+            private String city;
+            private String street;
+            private String street2;
+            private String state;
+            private String postal;
+            private double lat;
+            private String addressId;
+
+            public String getCountry() {
+                return country;
+            }
+
+            public void setCountry(String country) {
+                this.country = country;
+            }
+
+            public double getLng() {
+                return lng;
+            }
+
+            public void setLng(double lng) {
+                this.lng = lng;
+            }
+
+            public String getDirections() {
+                return directions;
+            }
+
+            public void setDirections(String directions) {
+                this.directions = directions;
+            }
+
+            public String getCity() {
+                return city;
+            }
+
+            public void setCity(String city) {
+                this.city = city;
+            }
+
+            public String getStreet() {
+                return street;
+            }
+
+            public void setStreet(String street) {
+                this.street = street;
+            }
+
+            public String getStreet2() {
+                return street2;
+            }
+
+            public void setStreet2(String street2) {
+                this.street2 = street2;
+            }
+
+            public String getState() {
+                return state;
+            }
+
+            public void setState(String state) {
+                this.state = state;
+            }
+
+            public String getPostal() {
+                return postal;
+            }
+
+            public void setPostal(String postal) {
+                this.postal = postal;
+            }
+
+            public double getLat() {
+                return lat;
+            }
+
+            public void setLat(double lat) {
+                this.lat = lat;
+            }
+
+            public String getAddressId() {
+                return addressId;
+            }
+
+            public void setAddressId(String addressId) {
+                this.addressId = addressId;
+            }
+        }
+
+        public static class UserBean {
+            /**
+             * firstname : Cristina
+             * phone : +14154302724
+             * company : Microsoft
+             * email : cakimoff@yammer-inc.com
+             * lastname : Fink
+             */
+
+            private String firstname;
+            private String phone;
+            private String company;
+            private String email;
+            private String lastname;
+
+            public String getFirstname() {
+                return firstname;
+            }
+
+            public void setFirstname(String firstname) {
+                this.firstname = firstname;
+            }
+
+            public String getPhone() {
+                return phone;
+            }
+
+            public void setPhone(String phone) {
+                this.phone = phone;
+            }
+
+            public String getCompany() {
+                return company;
+            }
+
+            public void setCompany(String company) {
+                this.company = company;
+            }
+
+            public String getEmail() {
+                return email;
+            }
+
+            public void setEmail(String email) {
+                this.email = email;
+            }
+
+            public String getLastname() {
+                return lastname;
+            }
+
+            public void setLastname(String lastname) {
+                this.lastname = lastname;
+            }
+        }
     }
 }

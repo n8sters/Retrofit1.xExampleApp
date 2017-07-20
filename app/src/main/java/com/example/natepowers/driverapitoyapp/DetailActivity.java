@@ -65,7 +65,7 @@ public class DetailActivity extends AppCompatActivity {
         filePathTextView = (TextView) findViewById(R.id.file_path_tv);
         apiResponseTv = (TextView) findViewById(R.id.api_response_tv);
         getTasksButton = (Button) findViewById(R.id.get_tasks_button);
-        uploadButton = (Button) findViewById(R.id.upload_button);
+        uploadButton = (Button) findViewById(R.id.launch_task_activity_button);
         takePictureButton = (Button) findViewById(R.id.take_picture_button);
         imageView = (ImageView) findViewById(R.id.imageView);
 
@@ -302,60 +302,6 @@ public class DetailActivity extends AppCompatActivity {
 
         return stringArray;
     }
-
-//    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-//    private void uploadPicture(User user, String fileUri) {
-//
-//        // Authorization header setup
-//        SharedPreferences sharedPref =
-//                PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-//        String token = sharedPref.getString("token", null);
-//        Log.e(TAG, "getAvailableTasks: Token at getAvailableTasks " + token);
-//        String base = UUID + ":" + token;
-//        String authHeader = "Basic " + Base64.encodeToString(base.getBytes(), Base64.NO_WRAP); // encode login
-//        Log.e(TAG, "getDriverData: token at start of getDriverData " + token);
-//
-//
-//
-//
-//        RequestBody descriptionPart = RequestBody.create(MultipartBody.FORM, "sample description");
-//
-//
-//        OkHttpClient.Builder okBuilder = new OkHttpClient.Builder();
-//
-//        HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
-//        okBuilder.addInterceptor(logging);
-//        logging.setLevel(HttpLoggingInterceptor.Level.BODY); // request everything
-//
-//        Retrofit.Builder builder = new Retrofit.Builder()
-//                .baseUrl("https://driver-gateway.gocopia.com")
-//                .addConverterFactory(GsonConverterFactory.create())
-//                .client(okBuilder.build());
-//
-//        Retrofit retrofit = builder.build();
-//
-//        DriverApi client = retrofit.create(DriverApi.class);
-//
-//        Call<User> call = client.uploadDriverPicture(authHeader, descriptionPart.toString(), fileUri); // get driver data
-//
-//        call.enqueue(new Callback<User>() {
-//            @Override
-//            public void onResponse(Call<User> call, Response<User> response) {
-//                if (response.code() == 200) {
-//                    // Do awesome stuff
-//                    Toast.makeText(DetailActivity.this, "It worked!", Toast.LENGTH_SHORT).show();
-//                } else {
-//                    // Handle other response codes
-//                    Toast.makeText(getApplicationContext(), "Something went wrong here.", Toast.LENGTH_SHORT).show();
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(Call<User> call, Throwable t) {
-//                Toast.makeText(DetailActivity.this, "Something went wrong...", Toast.LENGTH_SHORT).show();
-//            }
-//        });
-//    }
 
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

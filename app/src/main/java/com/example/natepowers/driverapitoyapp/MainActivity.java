@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
         final TextView label = (TextView) findViewById(R.id.textView);
         final EditText phoneEditText = (EditText) findViewById(R.id.editText);
 
-        Button uploadButton = (Button) findViewById(R.id.upload_button);
+        Button uploadButton = (Button) findViewById(R.id.launch_task_activity_button);
 
         Button getAccess = (Button) findViewById(R.id.request_access_button);
 
@@ -78,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
         uploadButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, UpdateDriverActivity.class);
+                Intent intent = new Intent(MainActivity.this, TaskTestActivity.class);
                 startActivity(intent);
             }
         });

@@ -67,13 +67,13 @@
         app:layout_constraintTop_toBottomOf="@+id/editText" />
 
     <Button
-        android:id="@+id/upload_button"
+        android:id="@+id/launch_task_activity_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="0dp"
         android:layout_marginRight="0dp"
         android:layout_marginTop="16dp"
-        android:text="Upload"
+        android:text="Tasks"
         app:layout_constraintLeft_toLeftOf="@+id/get_type_button"
         app:layout_constraintRight_toRightOf="@+id/get_type_button"
         app:layout_constraintTop_toBottomOf="@+id/get_type_button" />

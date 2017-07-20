@@ -19,10 +19,10 @@
         app:layout_constraintLeft_toLeftOf="parent" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/get_assigned_tasks_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Button"
+        android:text="Get Tasks"
         android:layout_marginTop="16dp"
         app:layout_constraintTop_toBottomOf="@+id/content_tv"
         android:layout_marginRight="8dp"
