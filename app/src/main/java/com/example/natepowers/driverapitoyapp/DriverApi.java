@@ -10,7 +10,7 @@ import retrofit2.http.Header;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
-
+import retrofit2.http.Path;
 
 
 public interface DriverApi {
@@ -68,27 +68,34 @@ public interface DriverApi {
 
     // list assigned tasks
     @GET("/tasks")
-    Call<List<Task>> getAssignedTasks(@Header("Authorization") String authHeader);
+    Call<List<Task>> getAssignedTasks(@Header("Authorization") String authHeader); // DONE
 
     // get task by id
     @GET("/tasks/{taskId}")
-    Call<User> getSpecificTask(@Header("Authorization") String authHeader);
+    Call<Task> getSpecificTask(@Header("Authorization") String authHeader, // DONE!
+                               @Path("taskId") String taskId);
 
     // start task
     @POST("/tasks/{taskId}/start")
-    Call<User> startTask(@Header("Authorization") String authHeader);
+    Call<Task> startTask(@Header("Authorization") String authHeader, // DONE
+                         @Path("taskId") String taskId);
+
 
     // arrive at task location
     @POST("/tasks/{taskId}/arrive")
-    Call<User> arriveTask(@Header("Authorization") String authHeader);
+    Call<Task> arriveTask(@Header("Authorization") String authHeader, // DONE
+                          @Path("taskId") String taskId);
+
 
     // complete task
     @POST("/tasks/{taskId}/complete")
-    Call<User> completeTask(@Header("Authorization") String authHeader);
+    Call<Task> completeTask(@Header("Authorization") String authHeader, // DONE
+                            @Path("taskId") String taskId);
 
     // fail task
-    @POST("/tasks/{taskId}/complete")
-    Call<User> failTask(@Header("Authorization") String authHeader);
+    @POST("/tasks/{taskId}/fail")
+    Call<Task> failTask(@Header("Authorization") String authHeader, // DONE
+                        @Path("taskId") String taskId);
 
 
 }
