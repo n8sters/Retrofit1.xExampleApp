@@ -13,6 +13,7 @@ import com.google.gson.Gson;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.LinkedList;
 import java.util.List;
 
 import okhttp3.MediaType;
@@ -433,8 +434,6 @@ class ApiSingleton {
 
                     Task task = response.body();
 
-
-
                 }
 
             }
@@ -448,8 +447,9 @@ class ApiSingleton {
         });
     }
 
-    public static void getPayloads(String taskId) {
+    public static List<TaskPayload> getPayloads(String taskId) {
 
+        final List<TaskPayload> list = new LinkedList<>();
 
         String UUID = "557264d2-ee65-41a9-b3b5-83d205562431";
         String token = "eyJhbGciOiJIUzI1NiJ9.eyJVU0lEIjoiOTFkNTI4NzhjMTgxYWRmNDY4OGU2ODA0ZThkODU0NTA2NzUzMmQ0MyIsInRzIjoxNTAwNTg0ODY4fQ.D5A9WaoA-D3B0XWUAlsFHBs0yRJdd5_5gS_1lcxS-WU";
@@ -488,7 +488,9 @@ class ApiSingleton {
 
                     Log.e(TAG, "onResponse: " + response.body().toString());
 
-
+                    for ( TaskPayload payload : response.body() ) {
+                        list.add(payload);
+                    }
 
                 }
 
@@ -501,6 +503,8 @@ class ApiSingleton {
             }
 
         });
+
+        return list;
     }
 
 
