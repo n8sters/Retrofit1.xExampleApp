@@ -110,14 +110,12 @@ public interface DriverApi {
 
     // check in payload
     @POST("/payloads/{payloadId}/checkin")
-    Call<Task> payloadCheckIn(@Header("Authorization") String authHeader,
-                                 @Path("taskId") String payloadId,
-                              @Body Task task );
+    Call<Task> payloadCheckIn(@Header("Authorization") String authHeader, // DONE
+                                 @Path("payloadId") String payloadId, @Body Task task );
 
     // check out payloads
     @POST("/payloads/{payloadId}/checkout")
-    Call<Task> payloadCheckOut(@Header("Authorization") String authHeader,
-                              @Path("taskId") String payloadId,
-                              @Body Task task );
+    Call<TaskPayload> payloadCheckOut(@Header("Authorization") String authHeader,
+                              @Path("taskId") String payloadId, @Body Task task );
 
 }

@@ -470,7 +470,9 @@ public class Task  {
         this.reason = reason;
     }
 
-    public Task(String pickupId ) {
-        this.pickupId =  pickupId;
+    public Task(String taskId, String pickupId ) {
+        this.taskId =  taskId;
+        this.pickupId = pickupId;
     }
+
 }

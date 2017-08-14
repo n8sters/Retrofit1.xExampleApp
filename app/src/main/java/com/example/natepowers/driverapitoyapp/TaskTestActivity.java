@@ -40,8 +40,8 @@ public class TaskTestActivity extends AppCompatActivity {
         mGetTasksButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Task task = new Task("mmA4SRZP_g");
-                ApiSingleton.getPayloads("kJcLWO1Inw");
+                Task task = new Task("kJcLWO1Inw", null);
+                ApiSingleton.checkInPayload("BLUE-NEAT-EAPGV", task);
             }
         });
 
