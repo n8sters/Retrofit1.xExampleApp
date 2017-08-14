@@ -328,11 +328,7 @@ class ApiSingleton {
     }
 
 
-    private void failTask(String taskId) {
-
-        SharedPreferences sharedPref =
-                PreferenceManager.getDefaultSharedPreferences(mContext);
-
+    public static void failTask(String taskId, Task task) {
 
         String UUID = "557264d2-ee65-41a9-b3b5-83d205562431";
         String token = "eyJhbGciOiJIUzI1NiJ9.eyJVU0lEIjoiOTFkNTI4NzhjMTgxYWRmNDY4OGU2ODA0ZThkODU0NTA2NzUzMmQ0MyIsInRzIjoxNTAwNTg0ODY4fQ.D5A9WaoA-D3B0XWUAlsFHBs0yRJdd5_5gS_1lcxS-WU";
@@ -361,7 +357,7 @@ class ApiSingleton {
 
         DriverApi client = retrofit.create(DriverApi.class);
 
-        Call<Task> call = client.failTask(authHeader, taskId); // get driver data
+        Call<Task> call = client.failTask(authHeader, taskId, task ); // get driver data
 
         call.enqueue(new Callback<Task>() {
             @Override
@@ -380,7 +376,7 @@ class ApiSingleton {
 
             @Override
             public void onFailure(Call<Task> call, Throwable t) {
-                Toast.makeText(mContext, "OnFailure Triggered", Toast.LENGTH_SHORT).show();
+                Toast.makeText(ApiApplicationLevelClass.getAppContext(), "OnFailure Triggered", Toast.LENGTH_SHORT).show();
 
             }
 

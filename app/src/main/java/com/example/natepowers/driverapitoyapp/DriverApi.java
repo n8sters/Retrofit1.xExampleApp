@@ -100,7 +100,7 @@ public interface DriverApi {
     // fail task
     @POST("/tasks/{taskId}/fail")
     Call<Task> failTask(@Header("Authorization") String authHeader, // DONE
-                        @Path("taskId") String taskId);
+                        @Path("taskId") String taskId, @Body Task reason);
 
 
 }

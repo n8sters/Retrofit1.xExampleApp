@@ -45,6 +45,7 @@ public class Task  {
     private int pickupAt;
     private AddressBean address;
     private String pickupId;
+    private String reason;
     private PickupBean.UserBean user;
 
     public int getArriveBy() {
@@ -459,6 +460,14 @@ public class Task  {
         public void setAddressId(String addressId) {
             this.addressId = addressId;
         }
+    }
+
+    public String getReason() {
+        return reason;
+    }
+
+    public void setReason(String reason) {
+        this.reason = reason;
     }
 
     public Task(String pickupId ) {
