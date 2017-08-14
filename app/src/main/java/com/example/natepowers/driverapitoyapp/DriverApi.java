@@ -102,5 +102,21 @@ public interface DriverApi {
     Call<Task> failTask(@Header("Authorization") String authHeader, // DONE
                         @Path("taskId") String taskId, @Body Task reason);
 
+    // get list of payloads
+    @GET("/payloads?taskId={taskId}")
+    Call<Task> getPayloadDetails(@Header("Authorization") String authHeader,
+                                 @Path("taskId") String taskId);
+
+    // check in payload
+    @POST("/payloads/{payloadId}/checkin")
+    Call<Task> payloadCheckIn(@Header("Authorization") String authHeader,
+                                 @Path("taskId") String payloadId,
+                              @Body Task task );
+
+    // check out payloads
+    @POST("/payloads/{payloadId}/checkout")
+    Call<Task> payloadCheckOut(@Header("Authorization") String authHeader,
+                              @Path("taskId") String payloadId,
+                              @Body Task task );
 
 }
