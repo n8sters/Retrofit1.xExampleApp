@@ -20,12 +20,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
 
 import okhttp3.OkHttpClient;
@@ -80,8 +76,8 @@ public class DetailActivity extends AppCompatActivity {
         takePictureButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                User user = new User();
-                logUserOut(user);
+                Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
+                startActivityForResult(intent, CAMERA_REQUEST);
             }
         });
 
@@ -290,19 +286,6 @@ public class DetailActivity extends AppCompatActivity {
     }
 
 
-    ArrayList<String> jsonStringToArray(String jsonString) throws JSONException {
-
-        ArrayList<String> stringArray = new ArrayList<String>();
-
-        JSONArray jsonArray = new JSONArray(jsonString);
-
-        for (int i = 0; i < jsonArray.length(); i++) {
-            stringArray.add(jsonArray.getString(i));
-        }
-
-        return stringArray;
-    }
-
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == CAMERA_REQUEST && resultCode == RESULT_OK) {
@@ -316,10 +299,13 @@ public class DetailActivity extends AppCompatActivity {
             // CALL THIS METHOD TO GET THE ACTUAL PATH
             File finalFile = new File(getRealPathFromURI(tempUri));
 
+            ApiSingleton.uploadDriverFile(finalFile);
 
             mFile = finalFile;
             mFilePath = finalFile.toString();
             filePathTextView.setText(mFilePath);
+
+
             Log.e(TAG, "onActivityResult: FilePath: " + finalFile.toString());
         }
     }

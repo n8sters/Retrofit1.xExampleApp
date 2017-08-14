@@ -11,9 +11,13 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.File;
 import java.util.List;
 
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
+import okhttp3.RequestBody;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -37,20 +41,31 @@ public class TaskTestActivity extends AppCompatActivity {
 
         mGetTasksButton = (Button) findViewById(R.id.get_assigned_tasks_button);
 
+        //pass it like this
+        File file = new File("/Users/natepowers/downloads/test-pic.jpg");
+        RequestBody requestFile =
+                RequestBody.create(MediaType.parse("multipart/form-data"), file);
+
+        // MultipartBody.Part is used to send also the actual file name
+        MultipartBody.Part body =
+                MultipartBody.Part.createFormData("image", file.getName(), requestFile);
+
+        // add another part within the multipart request
+        RequestBody fullName =
+                RequestBody.create(
+                        MediaType.parse("multipart/form-data"), "file");
+
         mGetTasksButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Task task = new Task("kJcLWO1Inw", null);
-                ApiSingleton.checkOutPayload("BLUE-NEAT-EAPGV", task);
+//                Task task = new Task("kJcLWO1Inw", null);
+                //ApiSingleton.uploadTaskFile();
             }
         });
 
     }
 
     private void getAssignedTasks(final User user) {
-
-        SharedPreferences sharedPref =
-                PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 
 
         String UUID = "557264d2-ee65-41a9-b3b5-83d205562431";
@@ -117,9 +132,6 @@ public class TaskTestActivity extends AppCompatActivity {
 
     private void getSpecificTask(String taskId) {
 
-        SharedPreferences sharedPref =
-                PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-
 
         String UUID = "557264d2-ee65-41a9-b3b5-83d205562431";
         String token = "eyJhbGciOiJIUzI1NiJ9.eyJVU0lEIjoiOTFkNTI4NzhjMTgxYWRmNDY4OGU2ODA0ZThkODU0NTA2NzUzMmQ0MyIsInRzIjoxNTAwNTg0ODY4fQ.D5A9WaoA-D3B0XWUAlsFHBs0yRJdd5_5gS_1lcxS-WU";
@@ -178,9 +190,6 @@ public class TaskTestActivity extends AppCompatActivity {
 
     private void acceptTask(Task task) {
 
-        SharedPreferences sharedPref =
-                PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-
 
         String UUID = "557264d2-ee65-41a9-b3b5-83d205562431";
         String token = "eyJhbGciOiJIUzI1NiJ9.eyJVU0lEIjoiOTFkNTI4NzhjMTgxYWRmNDY4OGU2ODA0ZThkODU0NTA2NzUzMmQ0MyIsInRzIjoxNTAwNTg0ODY4fQ.D5A9WaoA-D3B0XWUAlsFHBs0yRJdd5_5gS_1lcxS-WU";
@@ -238,9 +247,6 @@ public class TaskTestActivity extends AppCompatActivity {
     }
 
     private void startTask(String taskId) {
-
-        SharedPreferences sharedPref =
-                PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 
 
         String UUID = "557264d2-ee65-41a9-b3b5-83d205562431";
@@ -361,11 +367,7 @@ public class TaskTestActivity extends AppCompatActivity {
     }
 
 
-
     private void completeTask(String taskId) {
-
-        SharedPreferences sharedPref =
-                PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 
 
         String UUID = "557264d2-ee65-41a9-b3b5-83d205562431";
@@ -409,7 +411,6 @@ public class TaskTestActivity extends AppCompatActivity {
 
                     mContent.setText(task.getPickup().getAddress().getDirections());
 
-
                 }
 
             }
@@ -422,6 +423,8 @@ public class TaskTestActivity extends AppCompatActivity {
 
         });
     }
+
+
 
 
 }

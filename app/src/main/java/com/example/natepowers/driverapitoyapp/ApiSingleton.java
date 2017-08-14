@@ -2,14 +2,24 @@ package com.example.natepowers.driverapitoyapp;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.inputmethodservice.Keyboard;
+import android.net.Uri;
 import android.preference.PreferenceManager;
 import android.util.Base64;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
+import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -602,6 +612,156 @@ class ApiSingleton {
                 Log.e(TAG, "onFailure: failed " + t );
             }
 
+        });
+    }
+
+    public static void uploadTaskFile(File file) {
+        // create upload service client
+
+        String UUID = "557264d2-ee65-41a9-b3b5-83d205562431";
+        String token = "eyJhbGciOiJIUzI1NiJ9.eyJVU0lEIjoiOTFkNTI4NzhjMTgxYWRmNDY4OGU2ODA0ZThkODU0NTA2NzUzMmQ0MyIsInRzIjoxNTAwNTg0ODY4fQ.D5A9WaoA-D3B0XWUAlsFHBs0yRJdd5_5gS_1lcxS-WU";
+
+
+        Log.e(TAG, "getAvailableTasks: Token at getAvailableTasks " + token);
+
+
+        String base = UUID + ":" + token;
+        String authHeader = "Basic " + Base64.encodeToString(base.getBytes(), Base64.NO_WRAP); // encode login
+
+        Log.e(TAG, "getDriverData: token at start of getDriverData " + token);
+
+        OkHttpClient.Builder okBuilder = new OkHttpClient.Builder();
+
+        HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
+        okBuilder.addInterceptor(logging);
+        logging.setLevel(HttpLoggingInterceptor.Level.BODY); // request everything
+
+        Retrofit.Builder builder = new Retrofit.Builder()
+                .baseUrl("https://driver-gateway.gocopia.com")
+                .addConverterFactory(GsonConverterFactory.create())
+                .client(okBuilder.build());
+
+        Retrofit retrofit = builder.build();
+        DriverApi client = retrofit.create(DriverApi.class);
+
+        // create RequestBody instance from file
+        final RequestBody requestFile =
+                RequestBody.create(MediaType.parse("multipart/form-data"), file);
+
+        // MultipartBody.Part is used to send also the actual file name
+        MultipartBody.Part body =
+                MultipartBody.Part.createFormData("picture", file.getName(), requestFile);
+
+        // add another part within the multipart request
+        String descriptionString = "file";
+
+        // finally, execute the request
+        Call<ResponseBody> call = client.uploadTaskFile(authHeader, descriptionString, body);
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call,
+                                   Response<ResponseBody> response) {
+                Log.e(TAG, "onResponse: response" );
+
+                ImageResponse imageID;
+
+                if ( response.code() == 200 ) {
+
+                    String  jsonString;
+                    try {
+                        jsonString = response.body().string();
+                        imageID = new Gson().fromJson(jsonString, ImageResponse.class);
+
+                        Log.e(TAG, "onResponse: imageId: " + imageID.getUrl() );
+
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+                }
+
+
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Log.e("Upload error:", t.getMessage());
+            }
+        });
+    }
+
+    public static void uploadDriverFile(File file) {
+        // create upload service client
+
+        String UUID = "557264d2-ee65-41a9-b3b5-83d205562431";
+        String token = "eyJhbGciOiJIUzI1NiJ9.eyJVU0lEIjoiOTFkNTI4NzhjMTgxYWRmNDY4OGU2ODA0ZThkODU0NTA2NzUzMmQ0MyIsInRzIjoxNTAwNTg0ODY4fQ.D5A9WaoA-D3B0XWUAlsFHBs0yRJdd5_5gS_1lcxS-WU";
+
+
+        Log.e(TAG, "getAvailableTasks: Token at getAvailableTasks " + token);
+
+
+        String base = UUID + ":" + token;
+        String authHeader = "Basic " + Base64.encodeToString(base.getBytes(), Base64.NO_WRAP); // encode login
+
+        Log.e(TAG, "getDriverData: token at start of getDriverData " + token);
+
+        OkHttpClient.Builder okBuilder = new OkHttpClient.Builder();
+
+        HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
+        okBuilder.addInterceptor(logging);
+        logging.setLevel(HttpLoggingInterceptor.Level.BODY); // request everything
+
+        Retrofit.Builder builder = new Retrofit.Builder()
+                .baseUrl("https://driver-gateway.gocopia.com")
+                .addConverterFactory(GsonConverterFactory.create())
+                .client(okBuilder.build());
+
+        Retrofit retrofit = builder.build();
+        DriverApi client = retrofit.create(DriverApi.class);
+
+        // create RequestBody instance from file
+        final RequestBody requestFile =
+                RequestBody.create(MediaType.parse("multipart/form-data"), file);
+
+        // MultipartBody.Part is used to send also the actual file name
+        MultipartBody.Part body =
+                MultipartBody.Part.createFormData("picture", file.getName(), requestFile);
+
+        // add another part within the multipart request
+        String descriptionString = "file";
+
+        // finally, execute the request
+        Call<ResponseBody> call = client.uploadDriverFile(authHeader, descriptionString, body);
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call,
+                                   Response<ResponseBody> response) {
+                Log.e(TAG, "onResponse: response" );
+
+                ImageResponse imageID;
+
+                if ( response.code() == 200 ) {
+
+                    String  jsonString;
+                    try {
+                        jsonString = response.body().string();
+                        imageID = new Gson().fromJson(jsonString, ImageResponse.class);
+
+                        Log.e(TAG, "onResponse: imageId: " + imageID.getId() );
+
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+                }
+
+
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Log.e("Upload error:", t.getMessage());
+            }
         });
     }
 }

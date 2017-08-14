@@ -3,6 +3,8 @@ package com.example.natepowers.driverapitoyapp;
 import java.util.List;
 
 import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -36,12 +38,6 @@ public interface DriverApi {
     @POST("/sessions/deauthenticate")
     Call<User> logUserOut(@Header("Authorization") String authHeader); // DONE
 
-    // upload picture of the drivers' license, registration etc...
-    @Multipart
-    @POST("/tasks/upload/jpg")
-    Call<User> uploadDriverPicture(@Header("Authorization") String authHeader,
-                                    @Part String description,
-                                    @Part MultipartBody.Part photo);
 
     // get the drivers info
     @GET("/driver")
@@ -54,9 +50,17 @@ public interface DriverApi {
 
     // upload pics and files ( signature ) related to tasks
     @Multipart
-    @POST("/tasks/upload/{type}")
-    Call<User> uploadTaskFile(@Header("Authorization") String authHeader,
-                              @Part MultipartBody.Part photo);
+    @POST("/tasks/upload/jpg")
+    Call<ResponseBody> uploadTaskFile(@Header("Authorization") String authHeader,
+                                      @Part ("file") String name,
+                                      @Part MultipartBody.Part photo);
+
+    // upload pics related to driver profile
+    @Multipart
+    @POST("/driver/upload/jpg")
+    Call<ResponseBody> uploadDriverFile(@Header("Authorization") String authHeader,
+                                      @Part ("file") String name,
+                                      @Part MultipartBody.Part photo);
 
     // add driver bank info to account after they pass background
     @POST("/driver/bank")
@@ -115,7 +119,7 @@ public interface DriverApi {
 
     // check out payloads
     @POST("/payloads/{payloadId}/checkout")
-    Call<Task> payloadCheckOut(@Header("Authorization") String authHeader,
+    Call<Task> payloadCheckOut(@Header("Authorization") String authHeader, // DONE
                               @Path("payloadId") String payloadId, @Body Task task );
 
 }
