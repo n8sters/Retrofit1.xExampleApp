@@ -115,7 +115,7 @@ public interface DriverApi {
 
     // check out payloads
     @POST("/payloads/{payloadId}/checkout")
-    Call<TaskPayload> payloadCheckOut(@Header("Authorization") String authHeader,
-                              @Path("taskId") String payloadId, @Body Task task );
+    Call<Task> payloadCheckOut(@Header("Authorization") String authHeader,
+                              @Path("payloadId") String payloadId, @Body Task task );
 
 }

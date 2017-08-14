@@ -41,7 +41,7 @@ public class TaskTestActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Task task = new Task("kJcLWO1Inw", null);
-                ApiSingleton.checkInPayload("BLUE-NEAT-EAPGV", task);
+                ApiSingleton.checkOutPayload("BLUE-NEAT-EAPGV", task);
             }
         });
 
