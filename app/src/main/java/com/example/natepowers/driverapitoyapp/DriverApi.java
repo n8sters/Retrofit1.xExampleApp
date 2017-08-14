@@ -11,6 +11,7 @@ import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 
 public interface DriverApi {
@@ -103,9 +104,9 @@ public interface DriverApi {
                         @Path("taskId") String taskId, @Body Task reason);
 
     // get list of payloads
-    @GET("/payloads?taskId={taskId}")
-    Call<Task> getPayloadDetails(@Header("Authorization") String authHeader,
-                                 @Path("taskId") String taskId);
+    @GET("/payloads?")
+    Call<List<TaskPayload>> getPayloadDetails(@Header("Authorization") String authHeader, // DONE
+                                 @Query("taskId") String taskId);
 
     // check in payload
     @POST("/payloads/{payloadId}/checkin")

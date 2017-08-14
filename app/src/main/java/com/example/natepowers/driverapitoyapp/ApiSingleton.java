@@ -95,9 +95,6 @@ class ApiSingleton {
 
     private void getAssignedTasks(final User user) {
 
-        SharedPreferences sharedPref =
-                PreferenceManager.getDefaultSharedPreferences(mContext);
-
 
         String UUID = "557264d2-ee65-41a9-b3b5-83d205562431";
         String token = "eyJhbGciOiJIUzI1NiJ9.eyJVU0lEIjoiOTFkNTI4NzhjMTgxYWRmNDY4OGU2ODA0ZThkODU0NTA2NzUzMmQ0MyIsInRzIjoxNTAwNTg0ODY4fQ.D5A9WaoA-D3B0XWUAlsFHBs0yRJdd5_5gS_1lcxS-WU";
@@ -150,9 +147,6 @@ class ApiSingleton {
     }
 
     private void getSpecificTask(String taskId) {
-
-        SharedPreferences sharedPref =
-                PreferenceManager.getDefaultSharedPreferences(mContext);
 
 
         String UUID = "557264d2-ee65-41a9-b3b5-83d205562431";
@@ -439,6 +433,61 @@ class ApiSingleton {
             public void onFailure(Call<Task> call, Throwable t) {
                 Toast.makeText(mContext, "OnFailure Triggered", Toast.LENGTH_SHORT).show();
 
+            }
+
+        });
+    }
+
+    public static void getPayloads(String taskId) {
+
+
+        String UUID = "557264d2-ee65-41a9-b3b5-83d205562431";
+        String token = "eyJhbGciOiJIUzI1NiJ9.eyJVU0lEIjoiOTFkNTI4NzhjMTgxYWRmNDY4OGU2ODA0ZThkODU0NTA2NzUzMmQ0MyIsInRzIjoxNTAwNTg0ODY4fQ.D5A9WaoA-D3B0XWUAlsFHBs0yRJdd5_5gS_1lcxS-WU";
+
+
+        Log.e(TAG, "getAvailableTasks: Token at getAvailableTasks " + token);
+
+
+        String base = UUID + ":" + token;
+        String authHeader = "Basic " + Base64.encodeToString(base.getBytes(), Base64.NO_WRAP); // encode login
+
+        Log.e(TAG, "getDriverData: token at start of getDriverData " + token);
+
+        OkHttpClient.Builder okBuilder = new OkHttpClient.Builder();
+
+        HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
+        okBuilder.addInterceptor(logging);
+        logging.setLevel(HttpLoggingInterceptor.Level.BODY); // request everything
+
+        Retrofit.Builder builder = new Retrofit.Builder()
+                .baseUrl("https://driver-gateway.gocopia.com")
+                .addConverterFactory(GsonConverterFactory.create())
+                .client(okBuilder.build());
+
+        Retrofit retrofit = builder.build();
+
+        DriverApi client = retrofit.create(DriverApi.class);
+
+        Call<List<TaskPayload>> call = client.getPayloadDetails(authHeader, taskId);
+
+        call.enqueue(new Callback<List<TaskPayload>>() {
+            @Override
+            public void onResponse(Call<List<TaskPayload>> call, Response<List<TaskPayload>> response) {
+
+                if (response.code() == 200) {
+
+                    Log.e(TAG, "onResponse: " + response.body().toString());
+
+
+
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<List<TaskPayload>> call, Throwable t) {
+
+                Log.e(TAG, "onFailure: failed " + t );
             }
 
         });

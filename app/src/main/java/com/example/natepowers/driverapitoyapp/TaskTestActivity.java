@@ -41,8 +41,7 @@ public class TaskTestActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Task task = new Task("mmA4SRZP_g");
-                task.setReason("1");
-                ApiSingleton.failTask("mmA4SRZP_g", task);
+                ApiSingleton.getPayloads("kJcLWO1Inw");
             }
         });
 
