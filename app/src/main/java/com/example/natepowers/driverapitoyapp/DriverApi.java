@@ -76,6 +76,11 @@ public interface DriverApi {
                                @Path("taskId") String taskId);
 
     // start task
+    @POST("/tasks/accept")
+    Call<Task> acceptTask(@Header("Authorization") String authHeader, // DONE
+                         @Body Task task);
+
+    // start task
     @POST("/tasks/{taskId}/start")
     Call<Task> startTask(@Header("Authorization") String authHeader, // DONE
                          @Path("taskId") String taskId);

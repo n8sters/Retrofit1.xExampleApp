@@ -460,4 +460,8 @@ public class Task  {
             this.addressId = addressId;
         }
     }
+
+    public Task(String pickupId ) {
+        this.pickupId =  pickupId;
+    }
 }
