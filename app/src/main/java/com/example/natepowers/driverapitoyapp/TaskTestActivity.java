@@ -45,24 +45,11 @@ public class TaskTestActivity extends AppCompatActivity {
 
         displayButton = (Button) findViewById(R.id.display_button);
 
-        //pass it like this
-        File file = new File("/Users/natepowers/downloads/test-pic.jpg");
-        RequestBody requestFile =
-                RequestBody.create(MediaType.parse("multipart/form-data"), file);
-
-        // MultipartBody.Part is used to send also the actual file name
-        MultipartBody.Part body =
-                MultipartBody.Part.createFormData("image", file.getName(), requestFile);
-
-        // add another part within the multipart request
-        RequestBody fullName =
-                RequestBody.create(
-                        MediaType.parse("multipart/form-data"), "file");
-
         mGetTasksButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                payloadList = ApiSingleton.getPayloads("kJcLWO1Inw");
+               File f = new File("/storage/emulated/0/Pictures/1502769319395.jpg");
+                ApiSingleton.uploadDriverFile(f);
 
 
             }

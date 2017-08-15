@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
                 //User user = new User();
                 //getDriverData(user);
                 User user1 = new User(UUID, phoneEditText.getText().toString(), phone);
-                logUserIn(user1);
+                requestAccessCode(user1);
                 //sendNetworkRequest(user);
             }
         });
@@ -114,7 +114,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void logUserIn(final User user) {
+    private void requestAccessCode(final User user) {
 
         OkHttpClient.Builder okBuilder = new OkHttpClient.Builder();
 
