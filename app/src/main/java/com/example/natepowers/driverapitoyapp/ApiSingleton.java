@@ -10,6 +10,10 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
+import com.squareup.otto.Bus;
+import com.squareup.otto.Produce;
+import com.squareup.otto.Subscribe;
+import com.squareup.otto.ThreadEnforcer;
 
 import java.io.File;
 import java.io.IOException;
@@ -35,6 +39,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 class ApiSingleton {
 
     private static final String TAG = "ApiSingleton";
+    public static Task resultTask;
 
     private static final ApiSingleton ourInstance = new ApiSingleton();
 
@@ -46,6 +51,7 @@ class ApiSingleton {
 
     private ApiSingleton() {
     }
+    public static Bus bus = new Bus(ThreadEnforcer.MAIN);
 
 
     public static void acceptTask(Task task) {
@@ -157,7 +163,7 @@ class ApiSingleton {
         });
     }
 
-    private void getSpecificTask(String taskId) {
+    public static Task getSpecificTask(String taskId) {
 
 
         String UUID = "557264d2-ee65-41a9-b3b5-83d205562431";
@@ -167,7 +173,7 @@ class ApiSingleton {
         Log.e(TAG, "getAvailableTasks: Token at getAvailableTasks " + token);
 
 
-        String base = UUID + ":" + token;
+        final String base = UUID + ":" + token;
         String authHeader = "Basic " + Base64.encodeToString(base.getBytes(), Base64.NO_WRAP); // encode login
 
         Log.e(TAG, "getDriverData: token at start of getDriverData " + token);
@@ -193,12 +199,18 @@ class ApiSingleton {
             @Override
             public void onResponse(Call<Task> call, Response<Task> response) {
 
+
+
                 if (response.code() == 200) {
 
                     Log.e(TAG, "onResponse: " + response.body().toString());
 
-                    Task task = response.body();
+                    resultTask = response.body();
 
+                    Events.FragmentActivityMessage fragmentActivityMessageEvent =
+                            new Events.FragmentActivityMessage(response.body().getPickup().getAddress().getCity());
+
+                    GlobalBus.getBus().post(fragmentActivityMessageEvent);
 
                 }
 
@@ -206,12 +218,21 @@ class ApiSingleton {
 
             @Override
             public void onFailure(Call<Task> call, Throwable t) {
-                Toast.makeText(mContext, "OnFailure Triggered", Toast.LENGTH_SHORT).show();
-
+                Log.e(TAG, "onFailure: failed: " + t );
             }
 
         });
+
+        return resultTask;
     }
+
+    private void sendMessageToActivity() {
+        Events.FragmentActivityMessage fragmentActivityMessageEvent =
+                new Events.FragmentActivityMessage("test");
+
+        GlobalBus.getBus().post(fragmentActivityMessageEvent);
+    }
+
 
     private void startTask(String taskId) {
 
