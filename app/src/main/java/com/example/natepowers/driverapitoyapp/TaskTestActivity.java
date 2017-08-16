@@ -2,7 +2,6 @@ package com.example.natepowers.driverapitoyapp;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.EventLog;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -16,7 +15,7 @@ import com.squareup.otto.ThreadEnforcer;
 
 import java.util.List;
 
-import static com.example.natepowers.driverapitoyapp.Events.*;
+import static com.example.natepowers.driverapitoyapp.ResponseEvent.*;
 
 public class TaskTestActivity extends AppCompatActivity {
 
@@ -48,10 +47,8 @@ public class TaskTestActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-
                 Task task = ApiSingleton.getSpecificTask("_tAfI7vm2Q");
-                //bus.post("testing!");
-                sendMessageToFragment("test");
+
             }
 
         });
@@ -76,9 +73,9 @@ public class TaskTestActivity extends AppCompatActivity {
     }
 
     @Subscribe
-    public void getMessage(Events.FragmentActivityMessage fragmentActivityMessage) {
+    public void getMessage(InternalMessage message) {
         Toast.makeText(getApplicationContext(),
-                "message " + fragmentActivityMessage.getMessage(),
+                "message " + message.getMessage(),
                 Toast.LENGTH_SHORT).show();
     }
 
@@ -90,10 +87,6 @@ public class TaskTestActivity extends AppCompatActivity {
         GlobalBus.getBus().register(this);
     }
 
-
-    public void sendMessageToFragment(String message) {
-        GlobalBus.getBus().post(message);
-    }
 
     @Override
     protected void onStop() {

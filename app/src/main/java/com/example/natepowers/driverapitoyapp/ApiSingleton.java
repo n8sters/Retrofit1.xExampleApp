@@ -2,8 +2,6 @@ package com.example.natepowers.driverapitoyapp;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.inputmethodservice.Keyboard;
-import android.net.Uri;
 import android.preference.PreferenceManager;
 import android.util.Base64;
 import android.util.Log;
@@ -11,8 +9,6 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.squareup.otto.Bus;
-import com.squareup.otto.Produce;
-import com.squareup.otto.Subscribe;
 import com.squareup.otto.ThreadEnforcer;
 
 import java.io.File;
@@ -51,7 +47,6 @@ class ApiSingleton {
 
     private ApiSingleton() {
     }
-    public static Bus bus = new Bus(ThreadEnforcer.MAIN);
 
 
     public static void acceptTask(Task task) {
@@ -207,10 +202,10 @@ class ApiSingleton {
 
                     resultTask = response.body();
 
-                    Events.FragmentActivityMessage fragmentActivityMessageEvent =
-                            new Events.FragmentActivityMessage(response.body().getPickup().getAddress().getCity());
+                    ResponseEvent.InternalMessage message =
+                            new ResponseEvent.InternalMessage(response.body().getPickup().getAddress().getCity());
 
-                    GlobalBus.getBus().post(fragmentActivityMessageEvent);
+                    GlobalBus.getBus().post(message);
 
                 }
 
@@ -226,15 +221,9 @@ class ApiSingleton {
         return resultTask;
     }
 
-    private void sendMessageToActivity() {
-        Events.FragmentActivityMessage fragmentActivityMessageEvent =
-                new Events.FragmentActivityMessage("test");
-
-        GlobalBus.getBus().post(fragmentActivityMessageEvent);
-    }
 
 
-    private void startTask(String taskId) {
+    public void startTask(String taskId) {
 
         SharedPreferences sharedPref =
                 PreferenceManager.getDefaultSharedPreferences(mContext);
